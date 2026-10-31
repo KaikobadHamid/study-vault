@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Study Dashboard</title>
+  
+  <!-- Google Fonts: Inter (English) & Hind Siliguri (Bangla) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Hind Siliguri', 'sans-serif'],
+            bangla: ['Hind Siliguri', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', 'Hind Siliguri', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(107, 114, 128, 0.8);
+    }
+
+    /* Glassmorphism utilities */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Card glow effect */
+    .card-hover-glow:hover {
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+    }
+    .dark .card-hover-glow:hover {
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3), 0 8px 10px -6px rgba(59, 130, 246, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-16">
+
+  <!-- TOP NAVBAR HEADER -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 glass-card transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+            Master Study Dashboard
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Bangla, English & General Knowledge Hub</p>
+        </div>
+      </div>
+
+      <!-- Actions & Theme Toggle -->
+      <div class="flex items-center space-x-3">
+        <!-- Bookmark filter shortcut -->
+        <button id="toggleFavoritesBtn" onclick="toggleFavoritesFilter()" class="flex items-center space-x-1.5 text-xs font-medium px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i class="fa-star text-amber-500 far" id="starFilterIcon"></i>
+          <span class="hidden md:inline">Favorites</span>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+          <i class="fa-solid fa-sun text-lg hidden dark:block text-amber-400"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+
+    <!-- HERO / STATS SUMMARY BAR -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      
+      <!-- Stat 1: Total Subjects -->
+      <div class="glass-card p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center space-x-4 shadow-sm">
+        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl shrink-0">
+          <i class="fa-solid fa-book"></i>
+        </div>
+        <div>
+          <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Subjects</span>
+          <p class="text-2xl font-extrabold text-slate-900 dark:text-white" id="statSubjects">3</p>
+        </div>
+      </div>
+
+      <!-- Stat 2: Total Modules -->
+      <div class="glass-card p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center space-x-4 shadow-sm">
+        <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl shrink-0">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div>
+          <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Subtopics</span>
+          <p class="text-2xl font-extrabold text-slate-900 dark:text-white" id="statSubtopics">8</p>
+        </div>
+      </div>
+
+      <!-- Stat 3: Available Modules -->
+      <div class="glass-card p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center space-x-4 shadow-sm">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+          <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Available</span>
+          <p class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400" id="statAvailable">4</p>
+        </div>
+      </div>
+
+      <!-- Stat 4: Coming Soon -->
+      <div class="glass-card p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center space-x-4 shadow-sm">
+        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl shrink-0">
+          <i class="fa-solid fa-hourglass-half"></i>
+        </div>
+        <div>
+          <span class="text-xs uppercase font-semibold text-slate-400 tracking-wider">Coming Soon</span>
+          <p class="text-2xl font-extrabold text-amber-600 dark:text-amber-400" id="statUpcoming">4</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PROGRESS BAR SECTION -->
+    <section class="glass-card p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+      <div class="flex items-center justify-between text-sm">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-chart-line text-blue-500"></i>
+          <span class="font-semibold text-slate-700 dark:text-slate-200">Content Readiness Progress</span>
+        </div>
+        <span class="font-bold text-blue-600 dark:text-blue-400" id="progressPercentage">50%</span>
+      </div>
+      <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+        <div id="progressBar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 rounded-full transition-all duration-700 ease-out" style="width: 50%"></div>
+      </div>
+    </section>
+
+    <!-- SEARCH & FILTER TOOLBAR -->
+    <section class="glass-card p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <!-- Live Search Input -->
+        <div class="relative w-full md:w-96">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="handleSearch()"
+            placeholder="Search subtopic in English or বাংলা..."
+            class="w-full pl-10 pr-10 py-2.5 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white transition-all"
+          />
+          <button 
+            id="clearSearchBtn" 
+            onclick="clearSearch()" 
+            class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Filter Pill Tabs -->
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto" id="filterTabsContainer">
+          <button onclick="setFilter('all')" data-filter="all" class="filter-tab active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white transition-all shadow-sm">
+            All
+          </button>
+          <button onclick="setFilter('bangla')" data-filter="bangla" class="filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+            Bangla Grammar
+          </button>
+          <button onclick="setFilter('english')" data-filter="english" class="filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+            English Grammar
+          </button>
+          <button onclick="setFilter('gk')" data-filter="gk" class="filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+            General Knowledge
+          </button>
+          <button onclick="setFilter('available')" data-filter="available" class="filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+            <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>Available
+          </button>
+          <button onclick="setFilter('upcoming')" data-filter="upcoming" class="filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+            <i class="fa-solid fa-lock text-amber-500 mr-1"></i>Coming Soon
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Active Search Status -->
+      <div id="resultsSummary" class="text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-2">
+        <span>Showing all study modules</span>
+        <span id="matchCountBadge" class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full font-medium">8 items</span>
+      </div>
+    </section>
+
+    <!-- SUBJECT CARDS GRID -->
+    <section id="subjectsGrid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Dynamically populated via JS -->
+    </section>
+
+    <!-- EMPTY STATE IF SEARCH FAILS -->
+    <div id="emptyState" class="hidden glass-card p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 text-2xl">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-700 dark:text-slate-200">No matching subtopics found</h3>
+      <p class="text-sm text-slate-500 max-w-md mx-auto">Try searching for keywords like "সমাস", "Nouns", "Liberation War", or reset your filters.</p>
+      <button onclick="resetFilters()" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-xl text-xs hover:bg-blue-700 transition">
+        Reset All Filters
+      </button>
+    </div>
+
+  </main>
+
+  <!-- DASHBOARD FOOTER -->
+  <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>© Master Study Dashboard. All original topics and links preserved.</p>
+      <div class="flex items-center space-x-4 text-slate-400">
+        <span class="flex items-center"><i class="fa-solid fa-shield-halved mr-1.5 text-emerald-500"></i> Local Storage Enabled</span>
+        <span class="flex items-center"><i class="fa-solid fa-bolt mr-1.5 text-amber-500"></i> Dynamic Search</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT & DATA LOGIC -->
+  <script>
+    // Data representation of the original dashboard content
+    const studyData = [
+      {
+        id: "bangla",
+        title: "1. Bangla Grammar (বাংলা ব্যাকরণ)",
+        category: "Bangla Grammar",
+        icon: "fa-book-open-reader",
+        colorScheme: {
+          gradient: "from-amber-500 to-orange-600",
+          accentBg: "bg-amber-50 dark:bg-amber-950/30",
+          accentBorder: "border-amber-500",
+          badgeText: "text-amber-700 dark:text-amber-300",
+          badgeBg: "bg-amber-100 dark:bg-amber-900/40"
+        },
+        topics: [
+          {
+            name: "Topic: পারিভাষিক শব্দ",
+            subtopics: [
+              {
+                id: "bg-t1-s1",
+                title: "Subtopic 1: প্রশাসনিক পারিভাষিক শব্দ",
+                href: "01_Bangla_Grammar/Topic_01_Paribhashik_Shobdo/01_administrative.html",
+                available: true
+              },
+              {
+                id: "bg-t1-s2",
+                title: "Subtopic 2: শিক্ষাসংক্রান্ত পারিভাষিক শব্দ",
+                href: "01_Bangla_Grammar/Topic_01_Paribhashik_Shobdo/02_educational.html",
+                available: true
+              },
+              {
+                id: "bg-t1-s3",
+                title: "Subtopic 3: বৈজ্ঞানিক পারিভাষিক শব্দ",
+                href: "#",
+                available: false
+              }
+            ]
+          },
+          {
+            name: "Topic: সমাস",
+            subtopics: [
+              {
+                id: "bg-t2-s1",
+                title: "Subtopic 1: দ্বন্দ্ব সমাস",
+                href: "01_Bangla_Grammar/Topic_02_Somas/01_dvandva.html",
+                available: true
+              },
+              {
+                id: "bg-t2-s2",
+                title: "Subtopic 2: তৎপুরুষ সমাস",
+                href: "#",
+                available: false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "english",
+        title: "2. English Grammar",
+        category: "English Grammar",
+        icon: "fa-feather-pointed",
+        colorScheme: {
+          gradient: "from-blue-600 to-indigo-600",
+          accentBg: "bg-blue-50 dark:bg-blue-950/30",
+          accentBorder: "border-blue-500",
+          badgeText: "text-blue-700 dark:text-blue-300",
+          badgeBg: "bg-blue-100 dark:bg-blue-900/40"
+        },
+        topics: [
+          {
+            name: "Topic: Parts of Speech",
+            subtopics: [
+              {
+                id: "eg-t1-s1",
+                title: "Subtopic 1: Nouns & Classification",
+                href: "02_English_Grammar/Topic_01_Parts_of_Speech/01_nouns.html",
+                available: true
+              },
+              {
+                id: "eg-t1-s2",
+                title: "Subtopic 2: Pronoun Rules",
+                href: "#",
+                available: false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: "gk",
+        title: "3. General Knowledge",
+        category: "General Knowledge",
+        icon: "fa-earth-asia",
+        colorScheme: {
+          gradient: "from-emerald-500 to-teal-600",
+          accentBg: "bg-emerald-50 dark:bg-emerald-950/30",
+          accentBorder: "border-emerald-500",
+          badgeText: "text-emerald-700 dark:text-emerald-300",
+          badgeBg: "bg-emerald-100 dark:bg-emerald-900/40"
+        },
+        topics: [
+          {
+            name: "Topic: Bangladesh Affairs",
+            subtopics: [
+              {
+                id: "gk-t1-s1",
+                title: "Subtopic 1: 1971 Liberation War History",
+                href: "03_General_Knowledge/Topic_01_Bangladesh_Affairs/01_liberation_war.html",
+                available: true
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // State Variables
+    let activeFilter = 'all';
+    let searchQuery = '';
+    let showFavoritesOnly = false;
+    let favorites = JSON.parse(localStorage.getItem('study_dashboard_favorites') || '[]');
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      renderDashboard();
+      updateStats();
+
+      // Keyboard Shortcut for Search (Press '/' key)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          document.getElementById('searchInput').focus();
+        }
+      });
+    });
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('study_dashboard_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('study_dashboard_theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('study_dashboard_theme', 'dark');
+      }
+    }
+
+    // Toggle Bookmarks / Favorites
+    function toggleFavorite(event, subtopicId) {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const index = favorites.indexOf(subtopicId);
+      if (index > -1) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(subtopicId);
+      }
+      localStorage.setItem('study_dashboard_favorites', JSON.stringify(favorites));
+      renderDashboard();
+    }
+
+    function toggleFavoritesFilter() {
+      showFavoritesOnly = !showFavoritesOnly;
+      const starIcon = document.getElementById('starFilterIcon');
+      const btn = document.getElementById('toggleFavoritesBtn');
+
+      if (showFavoritesOnly) {
+        starIcon.classList.remove('far');
+        starIcon.classList.add('fas');
+        btn.classList.add('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-400');
+      } else {
+        starIcon.classList.remove('fas');
+        starIcon.classList.add('far');
+        btn.classList.remove('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-400');
+      }
+      renderDashboard();
+    }
+
+    // Filter and Search Operations
+    function setFilter(filterCategory) {
+      activeFilter = filterCategory;
+      
+      // Update Tab Styles
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        if (tab.dataset.filter === filterCategory) {
+          tab.className = "filter-tab active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white transition-all shadow-sm";
+        } else {
+          tab.className = "filter-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all";
+        }
+      });
+
+      renderDashboard();
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('searchInput');
+      searchQuery = input.value.trim().toLowerCase();
+      
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (searchQuery.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      renderDashboard();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      searchQuery = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderDashboard();
+    }
+
+    function resetFilters() {
+      clearSearch();
+      showFavoritesOnly = false;
+      const starIcon = document.getElementById('starFilterIcon');
+      starIcon.classList.remove('fas');
+      starIcon.classList.add('far');
+      document.getElementById('toggleFavoritesBtn').classList.remove('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-400');
+      setFilter('all');
+    }
+
+    // Statistics Counter Update
+    function updateStats() {
+      let totalSubtopics = 0;
+      let availableCount = 0;
+      let upcomingCount = 0;
+
+      studyData.forEach(subject => {
+        subject.topics.forEach(topic => {
+          topic.subtopics.forEach(sub => {
+            totalSubtopics++;
+            if (sub.available) availableCount++;
+            else upcomingCount++;
+          });
+        });
+      });
+
+      document.getElementById('statSubjects').textContent = studyData.length;
+      document.getElementById('statSubtopics').textContent = totalSubtopics;
+      document.getElementById('statAvailable').textContent = availableCount;
+      document.getElementById('statUpcoming').textContent = upcomingCount;
+
+      const percentage = Math.round((availableCount / totalSubtopics) * 100) || 0;
+      document.getElementById('progressPercentage').textContent = `${percentage}%`;
+      document.getElementById('progressBar').style.width = `${percentage}%`;
+    }
+
+    // Main Rendering Engine
+    function renderDashboard() {
+      const container = document.getElementById('subjectsGrid');
+      container.innerHTML = '';
+
+      let totalMatches = 0;
+
+      studyData.forEach(subject => {
+        // Category Filter check
+        if (activeFilter === 'bangla' && subject.id !== 'bangla') return;
+        if (activeFilter === 'english' && subject.id !== 'english') return;
+        if (activeFilter === 'gk' && subject.id !== 'gk') return;
+
+        // Filter subtopics within topics
+        const filteredTopics = [];
+
+        subject.topics.forEach(topic => {
+          const matchingSubtopics = topic.subtopics.filter(subtopic => {
+            // Available / Upcoming status filter
+            if (activeFilter === 'available' && !subtopic.available) return false;
+            if (activeFilter === 'upcoming' && subtopic.available) return false;
+
+            // Favorites filter
+            if (showFavoritesOnly && !favorites.includes(subtopic.id)) return false;
+
+            // Search query filter (matches subtopic title, topic title, or subject title)
+            if (searchQuery !== '') {
+              const matchesTitle = subtopic.title.toLowerCase().includes(searchQuery);
+              const matchesTopic = topic.name.toLowerCase().includes(searchQuery);
+              const matchesSubject = subject.title.toLowerCase().includes(searchQuery);
+              return matchesTitle || matchesTopic || matchesSubject;
+            }
+
+            return true;
+          });
+
+          if (matchingSubtopics.length > 0) {
+            filteredTopics.push({
+              ...topic,
+              subtopics: matchingSubtopics
+            });
+            totalMatches += matchingSubtopics.length;
+          }
+        });
+
+        // Skip subject card if no subtopics match
+        if (filteredTopics.length === 0) return;
+
+        // Count total subtopics in this subject card for progress badge
+        let availableCount = 0;
+        let cardTotal = 0;
+        filteredTopics.forEach(t => {
+          t.subtopics.forEach(s => {
+            cardTotal++;
+            if (s.available) availableCount++;
+          });
+        });
+
+        // Build HTML for Subject Card
+        const subjectCard = document.createElement('div');
+        subjectCard.className = 'glass-card rounded-3xl border border-slate-200/80 dark:border-slate-800/80 shadow-md card-hover-glow transition-all duration-300 flex flex-col overflow-hidden';
+
+        let topicsHtml = '';
+
+        filteredTopics.forEach(topic => {
+          let listItemsHtml = '';
+
+          topic.subtopics.forEach(sub => {
+            const isFav = favorites.includes(sub.id);
+            const favClass = isFav ? 'fas text-amber-500' : 'far text-slate-300 hover:text-amber-400 dark:text-slate-600';
+
+            if (sub.available) {
+              listItemsHtml += `
+                <li class="group">
+                  <a href="${sub.href}" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all duration-200">
+                    <div class="flex items-center space-x-3 pr-2 overflow-hidden">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                      <span class="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                        ${sub.title}
+                      </span>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                      <button onclick="toggleFavorite(event, '${sub.id}')" title="Bookmark Subtopic" class="p-1 text-xs">
+                        <i class="fa-star ${favClass}"></i>
+                      </button>
+                      <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center">
+                        <i class="fa-solid fa-arrow-up-right-from-square mr-1 text-[9px]"></i> Link
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              `;
+            } else {
+              listItemsHtml += `
+                <li class="group opacity-75">
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-slate-100/70 dark:bg-slate-900/40 border border-dashed border-slate-300 dark:border-slate-800 cursor-not-allowed">
+                    <div class="flex items-center space-x-3 pr-2 overflow-hidden">
+                      <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+                      <span class="text-sm font-medium text-slate-500 dark:text-slate-400 italic truncate">
+                        ${sub.title}
+                      </span>
+                    </div>
+                    <div class="flex items-center space-x-2 shrink-0">
+                      <button onclick="toggleFavorite(event, '${sub.id}')" title="Bookmark Subtopic" class="p-1 text-xs">
+                        <i class="fa-star ${favClass}"></i>
+                      </button>
+                      <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center">
+                        <i class="fa-solid fa-lock mr-1 text-[9px]"></i> Soon
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              `;
+            }
+          });
+
+          topicsHtml += `
+            <div class="space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center space-x-2 border-l-2 ${subject.colorScheme.accentBorder} pl-2.5 py-0.5">
+                <span>${topic.name}</span>
+              </h4>
+              <ul class="space-y-2">
+                ${listItemsHtml}
+              </ul>
+            </div>
+          `;
+        });
+
+        subjectCard.innerHTML = `
+          <!-- Subject Card Header -->
+          <div class="p-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr ${subject.colorScheme.gradient} text-white flex items-center justify-center text-lg shadow-sm">
+                <i class="fa-solid ${subject.icon}"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">${subject.title}</h3>
+                <span class="text-xs text-slate-400 font-medium">${subject.category}</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg ${subject.colorScheme.badgeBg} ${subject.colorScheme.badgeText}">
+              ${availableCount}/${cardTotal} Ready
+            </span>
+          </div>
+
+          <!-- Subject Content -->
+          <div class="p-5 space-y-5 flex-1">
+            ${topicsHtml}
+          </div>
+        `;
+
+        container.appendChild(subjectCard);
+      });
+
+      // Handle Empty State Visibility
+      const emptyState = document.getElementById('emptyState');
+      const matchBadge = document.getElementById('matchCountBadge');
+
+      matchBadge.textContent = `${totalMatches} ${totalMatches === 1 ? 'item' : 'items'}`;
+
+      if (totalMatches === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+  </script>
+
+</body>
+</html>
