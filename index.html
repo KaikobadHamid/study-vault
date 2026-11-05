@@ -23,7 +23,18 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'solo-leveling-system';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+    
+    // Check platform environment config OR user-saved custom Firebase config for Vercel
+    let firebaseConfig = null;
+    if (typeof __firebase_config !== 'undefined') {
+      firebaseConfig = JSON.parse(__firebase_config);
+    } else {
+      const customConfig = localStorage.getItem('sl_firebase_config');
+      if (customConfig) {
+        try { firebaseConfig = JSON.parse(customConfig); } catch(e){}
+      }
+    }
+
     const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
     if (firebaseConfig) {
@@ -224,10 +235,10 @@
         <div id="systemTime" class="font-launcher text-sm md:text-base text-cyan-300 tracking-wider">
           --:--:-- --
         </div>
-        <div class="flex items-center justify-end space-x-1.5 font-launcher-sub text-[10px] text-blue-400">
+        <button onclick="openCloudConfigModal()" class="flex items-center justify-end space-x-1.5 font-launcher-sub text-[10px] text-blue-400 hover:text-cyan-300 transition-colors cursor-pointer">
           <span id="syncIndicator" class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-          <span id="syncText">SYSTEM ACTIVE</span>
-        </div>
+          <span id="syncText">SYNC SETTINGS</span>
+        </button>
       </div>
     </header>
 
@@ -905,6 +916,47 @@
     </div>
   </div>
 
+  <!-- CLOUD SYNC CONFIGURATION MODAL (FOR VERCEL DEPLOYMENT) -->
+  <div id="cloudConfigModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-system-card border-2 border-system-blue clip-system-box p-6 max-w-md w-full glow-blue relative">
+      <div class="flex items-center space-x-2 border-b border-system-blue/40 pb-3 mb-4">
+        <i class="fa-solid fa-cloud text-system-blue text-lg"></i>
+        <h3 class="font-launcher text-sm text-system-blue text-glow-blue">
+          CLOUD SYNC CONFIGURATION
+        </h3>
+      </div>
+      <p class="text-xs text-slate-300 font-launcher-sub mb-4 leading-relaxed">
+        ON VERCEL, PASTE YOUR FIREBASE CONFIG JSON BELOW TO ENABLE LIVE CROSS-DEVICE SYNC BETWEEN PHONE & PC:
+      </p>
+      <form onsubmit="saveFirebaseConfig(event)" class="space-y-4">
+        <div>
+          <textarea 
+            id="firebaseConfigInput" 
+            rows="5"
+            placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "...", "storageBucket": "...", "messagingSenderId": "...", "appId": "..."}'
+            class="w-full px-3 py-2 system-input-field text-xs font-mono"
+          ></textarea>
+        </div>
+        
+        <div class="flex items-center space-x-2 pt-2">
+          <button 
+            type="button" 
+            onclick="closeCloudConfigModal()" 
+            class="flex-1 py-2 bg-slate-900 border border-slate-700 text-slate-400 font-launcher text-xs clip-system-btn hover:bg-slate-800 transition-all"
+          >
+            CANCEL
+          </button>
+          <button 
+            type="submit" 
+            class="flex-1 py-2 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn hover:from-blue-600 hover:to-cyan-400 transition-all"
+          >
+            SAVE CONFIG
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- PASSWORD CONFIRMATION MODAL FOR ASPECT EDITING -->
   <div id="aspectAuthModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-system-card border-2 border-amber-500 clip-system-box p-6 max-w-sm w-full glow-blue relative">
@@ -1216,7 +1268,8 @@
     function syncToCloud(docType, data) {
       if (!window.firebaseDB || !window.firebaseAuth?.currentUser) return;
       const userId = localStorage.getItem('sl_user') || 'kaikobad';
-      const docRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', docType);
+      // Use Public Data Path so both PC and Phone share the same player document regardless of anonymous auth UID
+      const docRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', `player_${docType}`, userId);
       window.setDocFunc(docRef, data, { merge: true }).catch(err => console.log("Cloud save:", err));
     }
 
@@ -1227,8 +1280,8 @@
       const syncText = document.getElementById('syncText');
       if (syncText) syncText.innerText = 'CLOUD SYNC ACTIVE';
 
-      // Realtime listener for Stats & Quests
-      const statsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', 'stats');
+      // Realtime listener for Stats & Quests (Public Data Path for cross-device sync)
+      const statsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', 'player_stats', userId);
       window.cloudUnsubStats = window.onSnapshotFunc(statsRef, (snapshot) => {
         if (snapshot.exists()) {
           const cloudData = snapshot.data();
@@ -1238,8 +1291,8 @@
         }
       }, (err) => console.log("Cloud sync stats:", err));
 
-      // Realtime listener for Life Aspects
-      const aspectsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', 'aspects');
+      // Realtime listener for Life Aspects (Public Data Path for cross-device sync)
+      const aspectsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', 'player_aspects', userId);
       window.cloudUnsubAspects = window.onSnapshotFunc(aspectsRef, (snapshot) => {
         if (snapshot.exists()) {
           const cloudAspects = snapshot.data();
@@ -1251,6 +1304,35 @@
           renderDashboard();
         }
       }, (err) => console.log("Cloud sync aspects:", err));
+    }
+
+    function openCloudConfigModal() {
+      const savedConfig = localStorage.getItem('sl_firebase_config') || '';
+      document.getElementById('firebaseConfigInput').value = savedConfig;
+      document.getElementById('cloudConfigModal').classList.remove('hidden');
+    }
+
+    function closeCloudConfigModal() {
+      document.getElementById('cloudConfigModal').classList.add('hidden');
+    }
+
+    function saveFirebaseConfig(e) {
+      e.preventDefault();
+      const raw = document.getElementById('firebaseConfigInput').value.trim();
+      if (raw) {
+        try {
+          JSON.parse(raw); // Validate JSON format
+          localStorage.setItem('sl_firebase_config', raw);
+          closeCloudConfigModal();
+          showSystemModal('CLOUD CONFIG SAVED', 'FIREBASE CONFIGURATION STORED. REFRESHING PAGE TO ESTABLISH CLOUD CONNECTION...');
+          setTimeout(() => window.location.reload(), 1500);
+        } catch(err) {
+          showSystemModal('INVALID CONFIG', 'PLEASE ENTER VALID FIREBASE CONFIG JSON FORMAT.');
+        }
+      } else {
+        localStorage.removeItem('sl_firebase_config');
+        closeCloudConfigModal();
+      }
     }
 
     function recalcRelationshipsAvg() {
