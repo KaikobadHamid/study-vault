@@ -1,658 +1,1155 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cliffs TOEFL</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solo Leveling // System</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Font: Inter (Standard Clean Sans-Serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            system: {
+              bg: '#030a16',
+              card: 'rgba(10, 25, 50, 0.88)',
+              navy: '#0a192f',
+              blue: '#00d2ff',
+              electric: '#3b82f6',
+              deepBlue: '#1e3a8a',
+              purple: '#8b5cf6',
+              red: '#ff2a5f',
+              darkBorder: 'rgba(0, 210, 255, 0.35)'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    :root {
-      --bg-color: #f0f7ff;
-      --container-bg: #ffffff;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --border-color: #e0f2fe;
-      --card-bg: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
-      --card-border: #bae6fd;
-      --form-bg: #f8fafc;
-      --form-border: #e2e8f0;
-      --input-bg: #ffffff;
-      --input-border: #cbd5e1;
-      --input-text: #0f172a;
-      --th-bg: #e0f2fe;
-      --th-color: #0369a1;
-      --th-border: #bae6fd;
-      --tr-border: #f1f5f9;
-      --tr-hover: #f8fafc;
-      --completed-bg: #f0fdf4;
-      --completed-text: #94a3b8;
-      --primary-accent: #0284c7;
-      --primary-accent-hover: #0369a1;
-      --primary-heading: #0369a1;
-      --track-bg: #cbd5e1;
-      --toggle-bg: #e2e8f0;
+    /* Custom Dark Blue Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(3, 10, 22, 0.95);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00d2ff;
+      border-radius: 2px;
+      box-shadow: 0 0 10px #00d2ff;
     }
 
-    [data-theme="dark"] {
-      --bg-color: #0b132b;
-      --container-bg: #1c2541;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border-color: #2a3a5e;
-      --card-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      --card-border: #0284c7;
-      --form-bg: #0f172a;
-      --form-border: #334155;
-      --input-bg: #1e293b;
-      --input-border: #475569;
-      --input-text: #f8fafc;
-      --th-bg: #0f172a;
-      --th-color: #38bdf8;
-      --th-border: #1e293b;
-      --tr-border: #334155;
-      --tr-hover: #243256;
-      --completed-bg: #064e3b22;
-      --completed-text: #64748b;
-      --primary-accent: #38bdf8;
-      --primary-accent-hover: #0284c7;
-      --primary-heading: #38bdf8;
-      --track-bg: #334155;
-      --toggle-bg: #334155;
+    /* System Window Cut Corners Clip Path */
+    .clip-system-box {
+      clip-path: polygon(
+        0 0, 
+        calc(100% - 16px) 0, 
+        100% 16px, 
+        100% 100%, 
+        16px 100%, 
+        0 calc(100% - 16px)
+      );
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    .clip-system-btn {
+      clip-path: polygon(
+        0 0, 
+        calc(100% - 10px) 0, 
+        100% 10px, 
+        100% 100%, 
+        10px 100%, 
+        0 calc(100% - 10px)
+      );
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-primary);
-      padding: 24px;
-      display: flex;
-      justify-content: center;
-      transition: background-color 0.3s ease, color 0.3s ease;
+    /* Dark Blue Glow Effects */
+    .glow-blue {
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.3), inset 0 0 15px rgba(0, 210, 255, 0.08);
+    }
+    .glow-blue-strong {
+      box-shadow: 0 0 30px rgba(0, 210, 255, 0.55), inset 0 0 20px rgba(0, 210, 255, 0.18);
+    }
+    .glow-electric {
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), inset 0 0 15px rgba(59, 130, 246, 0.12);
+    }
+    .glow-red {
+      box-shadow: 0 0 20px rgba(255, 42, 95, 0.5), inset 0 0 15px rgba(255, 42, 95, 0.2);
     }
 
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background: var(--container-bg);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      padding: 32px;
-      border: 1px solid var(--border-color);
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+    .text-glow-blue {
+      text-shadow: 0 0 8px rgba(0, 210, 255, 0.8), 0 0 18px rgba(0, 210, 255, 0.4);
+    }
+    .text-glow-electric {
+      text-shadow: 0 0 8px rgba(59, 130, 246, 0.8), 0 0 18px rgba(59, 130, 246, 0.4);
     }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
+    /* Dark Blue Scanline Texture */
+    .scanline {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 210, 255, 0.025) 50%,
+        rgba(0, 210, 255, 0.025)
+      );
+      background-size: 100% 4px;
     }
 
-    h1 {
-      color: var(--primary-heading);
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 4px;
-    }
-
-    p.subtitle {
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
-    .header-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-control {
-      background: var(--toggle-bg);
-      border: 1px solid var(--input-border);
-      color: var(--text-primary);
-      padding: 8px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    /* Custom Input Style */
+    .system-input-field {
+      background: rgba(4, 15, 35, 0.9);
+      border: 1px solid rgba(0, 210, 255, 0.35);
+      color: #00d2ff;
       transition: all 0.2s ease;
     }
-
-    .btn-control:hover {
-      border-color: var(--primary-accent);
-    }
-
-    .btn-lock.locked {
-      background-color: #fee2e2;
-      color: #991b1b;
-      border-color: #fca5a5;
-    }
-
-    [data-theme="dark"] .btn-lock.locked {
-      background-color: #7f1d1d44;
-      color: #fca5a5;
-      border-color: #991b1b;
-    }
-
-    .btn-lock.unlocked {
-      background-color: #dcfce7;
-      color: #166534;
-      border-color: #86efac;
-    }
-
-    [data-theme="dark"] .btn-lock.unlocked {
-      background-color: #14532d44;
-      color: #86efac;
-      border-color: #166534;
-    }
-
-    /* Water Flow Progress Bar */
-    .chart-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 32px;
-    }
-
-    .chart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .chart-title {
-      font-weight: bold;
-      color: var(--primary-heading);
-      font-size: 16px;
-    }
-
-    .chart-stats {
-      font-weight: bold;
-      color: var(--primary-accent);
-      font-size: 16px;
-    }
-
-    .bar-container {
-      width: 100%;
-      height: 28px;
-      background-color: var(--track-bg);
-      border-radius: 14px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(
-        -45deg,
-        #0284c7,
-        #38bdf8,
-        #0284c7,
-        #0369a1,
-        #38bdf8
-      );
-      background-size: 300% 300%;
-      animation: waterFlow 4s ease infinite;
-      border-radius: 14px;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-
-    .bar-fill::after {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle, rgba(255,255,255,0.4) 10%, transparent 20%);
-      background-size: 12px 12px;
-      opacity: 0.3;
-      animation: bubbles 3s linear infinite;
-    }
-
-    @keyframes waterFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes bubbles {
-      0% { background-position: 0 0; }
-      100% { background-position: 0 -24px; }
-    }
-
-    /* Input Form Section */
-    .form-card {
-      background: var(--form-bg);
-      border: 1px solid var(--form-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 32px;
-      transition: all 0.3s ease;
-    }
-
-    .form-card.hidden {
-      display: none;
-    }
-
-    .form-title {
-      font-size: 16px;
-      font-weight: bold;
-      color: var(--text-primary);
-      margin-bottom: 14px;
-    }
-
-    .input-grid {
-      display: grid;
-      grid-template-columns: 120px 1fr 180px auto;
-      gap: 12px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
-      background-color: var(--input-bg);
-      color: var(--input-text);
-      border: 1px solid var(--input-border);
-      border-radius: 6px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
+    .system-input-field:focus {
       outline: none;
-      transition: border-color 0.2s, background-color 0.3s;
+      border-color: #00d2ff;
+      box-shadow: 0 0 15px rgba(0, 210, 255, 0.45);
+      background: rgba(8, 24, 54, 0.98);
     }
 
-    input[type="text"]:focus {
-      border-color: var(--primary-accent);
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+    /* Typography Classes */
+    .font-launcher {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
-
-    .btn-add {
-      background-color: var(--primary-accent);
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .btn-add:hover {
-      background-color: var(--primary-accent-hover);
-    }
-
-    /* Topics Table */
-    .table-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    th {
-      background-color: var(--th-bg);
-      color: var(--th-color);
-      padding: 12px 16px;
-      font-size: 14px;
-      border-bottom: 2px solid var(--th-border);
-    }
-
-    td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--tr-border);
-      font-size: 14px;
-    }
-
-    tr:hover {
-      background-color: var(--tr-hover);
-    }
-
-    .completed-row td:not(:first-child) {
-      opacity: 0.6;
-    }
-
-    .topic-link {
-      color: var(--primary-heading);
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.2s ease;
-    }
-
-    .topic-link:hover {
-      color: var(--primary-accent);
-      text-decoration: underline;
-    }
-
-    .completed-row .topic-link {
-      text-decoration: line-through;
-    }
-
-    .checkbox-custom {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-      accent-color: var(--primary-accent);
-    }
-
-    .btn-delete {
-      background: none;
-      border: none;
-      color: #ef4444;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-
-    .btn-delete:hover {
-      background-color: rgba(239, 68, 68, 0.15);
-    }
-
-    .action-col-hidden {
-      display: none;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 24px;
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    @media (max-width: 640px) {
-      .input-grid {
-        grid-template-columns: 1fr;
-      }
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
+    .font-launcher-sub {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
   </style>
 </head>
-<body>
+<body class="bg-system-bg text-slate-100 font-sans min-h-screen overflow-x-hidden relative select-none">
 
-  <div class="container">
-    <header>
-      <div>
-        <h1>Cliffs TOEFL</h1>
-        <p class="subtitle">Preparation Tracker & Notes Directory</p>
+  <!-- Background Dark Blue Mana Particles & Grid -->
+  <canvas id="manaCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+  <div class="fixed inset-0 scanline pointer-events-none z-10"></div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="relative z-20 min-h-screen flex flex-col justify-between p-4 md:p-8 max-w-7xl mx-auto">
+    
+    <!-- TOP BAR HEADER -->
+    <header class="w-full flex flex-row items-center justify-between border-b border-system-blue/30 pb-4 mb-6 gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-3 h-3 bg-system-blue rounded-full animate-ping"></div>
+        <div>
+          <h1 class="font-launcher text-xl md:text-2xl text-system-blue text-glow-blue">
+            SOLO LEVELING
+          </h1>
+        </div>
       </div>
-      <div class="header-controls">
-        <button class="btn-control btn-lock locked" id="lockBtn" onclick="toggleLock()">
-          <span id="lockIcon">🔒</span> <span id="lockLabel">Locked</span>
-        </button>
-        <button class="btn-control" id="themeToggleBtn" onclick="toggleTheme()">
-          <span id="themeIcon">🌙</span> <span id="themeLabel">Dark Mode</span>
-        </button>
+      
+      <!-- Live 12-Hour Clock with AM/PM -->
+      <div class="text-right">
+        <div id="systemTime" class="font-launcher text-sm md:text-base text-cyan-300 tracking-wider">
+          --:--:-- --
+        </div>
+        <div class="font-launcher-sub text-[10px] text-blue-400">
+          SYSTEM ACTIVE
+        </div>
       </div>
     </header>
 
-    <!-- Water Flow Horizontal Bar Chart -->
-    <div class="chart-card">
-      <div class="chart-header">
-        <span class="chart-title">Overall Completion</span>
-        <span class="chart-stats" id="completionText">0% (0/0)</span>
-      </div>
-      <div class="bar-container">
-        <div class="bar-fill" id="progressBar"></div>
-      </div>
-    </div>
+    <!-- ========================================================================= -->
+    <!-- LOGIN SCREEN -->
+    <!-- ========================================================================= -->
+    <main id="authView" class="flex-1 flex items-center justify-center my-8">
+      <div class="w-full max-w-md bg-system-card border-2 border-system-blue/60 clip-system-box p-6 md:p-8 glow-blue relative backdrop-blur-xl">
+        
+        <!-- Corner Accent Decals -->
+        <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-system-blue"></div>
+        <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-system-blue"></div>
+        <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-system-blue"></div>
+        <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-system-blue"></div>
 
-    <!-- Add Topic Input Form (Hidden in Locked Mode) -->
-    <div class="form-card hidden" id="formCard">
-      <div class="form-title">Add New Topic Note</div>
-      <form id="topicForm">
-        <div class="input-grid">
-          <input type="text" id="topicNo" placeholder="Topic No (e.g. 01)" required />
-          <input type="text" id="topicName" placeholder="Topic Name (e.g. Subject-Verb)" required />
-          <input type="text" id="topicFile" placeholder="File Link (e.g. notes/topic-01.html)" />
-          <button type="submit" class="btn-add">Add Topic</button>
+        <!-- Login Header & Instruction -->
+        <div class="text-center mb-8">
+          <h2 class="font-launcher text-2xl text-system-blue text-glow-blue mb-2">
+            SOLO LEVELING
+          </h2>
+          <p class="font-launcher-sub text-xs text-slate-300 tracking-wider">
+            Please Enter your credentials
+          </p>
         </div>
-      </form>
-    </div>
 
-    <!-- Topics Table -->
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 50px;">Done</th>
-            <th style="width: 120px;">Topic No</th>
-            <th>Topic Name (Click to Open Note)</th>
-            <th class="action-col-header action-col-hidden" style="width: 60px;">Action</th>
-          </tr>
-        </thead>
-        <tbody id="topicsTableBody">
-          <!-- Rendered via JS -->
-        </tbody>
-      </table>
+        <!-- Error Alert Box -->
+        <div id="loginErrorBox" class="hidden bg-system-red/15 border border-system-red p-3 mb-5 clip-system-btn glow-red">
+          <div class="flex items-center space-x-2 text-system-red font-launcher text-xs">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>INVALID CREDENTIALS. ACCESS DENIED.</span>
+          </div>
+        </div>
+
+        <!-- Clean Form (EMPTY DEFAULT VALUES) -->
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-6">
+          <!-- Player ID -->
+          <div>
+            <label class="block font-launcher-sub text-xs text-blue-300 mb-2">
+              PLAYER ID
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-system-blue">
+                <i class="fa-solid fa-user-ninja text-sm"></i>
+              </span>
+              <input 
+                type="text" 
+                id="loginUsername"
+                value=""
+                required
+                placeholder="Enter Player ID"
+                autocomplete="off"
+                class="w-full pl-10 pr-4 py-3 system-input-field rounded-none text-sm font-semibold font-launcher-sub"
+              >
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block font-launcher-sub text-xs text-blue-300 mb-2">
+              PASSWORD
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-system-blue">
+                <i class="fa-solid fa-lock text-sm"></i>
+              </span>
+              <input 
+                type="password" 
+                id="loginPassword"
+                value=""
+                required
+                placeholder="Enter Password"
+                autocomplete="off"
+                class="w-full pl-10 pr-4 py-3 system-input-field rounded-none text-sm font-semibold font-launcher-sub"
+              >
+            </div>
+          </div>
+
+          <!-- Authenticate Button -->
+          <button 
+            type="submit"
+            class="w-full py-4 bg-gradient-to-r from-blue-700 via-system-blue to-cyan-500 hover:from-blue-600 hover:to-cyan-400 text-slate-950 font-launcher text-sm tracking-widest clip-system-btn transition-all duration-300 active:scale-95 shadow-lg shadow-blue-500/30 flex items-center justify-center space-x-2 mt-4"
+          >
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>AUTHENTICATE</span>
+          </button>
+        </form>
+
+      </div>
+    </main>
+
+
+    <!-- ========================================================================= -->
+    <!-- PLAYER SYSTEM DASHBOARD -->
+    <!-- ========================================================================= -->
+    <main id="dashboardView" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 my-4">
+      
+      <!-- LEFT COLUMN: PLAYER STATUS WINDOW -->
+      <section class="lg:col-span-5 flex flex-col space-y-5">
+        
+        <!-- STATUS MAIN WINDOW -->
+        <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue relative backdrop-blur-xl">
+          
+          <!-- System Header Bar -->
+          <div class="flex items-center justify-between border-b border-system-blue/40 pb-3 mb-4">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-bars-staggered text-system-blue"></i>
+              <span class="font-launcher text-sm text-system-blue text-glow-blue">
+                STATUS WINDOW
+              </span>
+            </div>
+            <span class="text-[10px] font-launcher-sub bg-system-blue/20 text-system-blue px-2 py-0.5 border border-system-blue/40">
+              JOB: SHADOW MONARCH
+            </span>
+          </div>
+
+          <!-- Basic Info Header -->
+          <div class="grid grid-cols-2 gap-4 mb-4 bg-slate-950/70 p-3 border border-system-blue/20">
+            <div>
+              <div class="text-[10px] font-launcher-sub text-slate-400">NAME</div>
+              <div id="playerNameDisplay" class="font-launcher text-lg text-white text-glow-blue">
+                KAIKOBAD
+              </div>
+            </div>
+            <div>
+              <div class="text-[10px] font-launcher-sub text-slate-400">TITLE</div>
+              <div class="font-launcher text-xs text-blue-400 text-glow-electric">
+                AWAKENED S-RANK
+              </div>
+            </div>
+            <div>
+              <div class="text-[10px] font-launcher-sub text-slate-400">LEVEL</div>
+              <div id="playerLevelDisplay" class="font-launcher text-2xl text-system-blue">
+                120
+              </div>
+            </div>
+            <div>
+              <div class="text-[10px] font-launcher-sub text-slate-400">FATIGUE</div>
+              <div id="playerFatigueDisplay" class="font-launcher text-base text-emerald-400">
+                0
+              </div>
+            </div>
+          </div>
+
+          <!-- HP & MP Gauges -->
+          <div class="space-y-3 mb-5">
+            <!-- HP Bar -->
+            <div>
+              <div class="flex justify-between text-xs font-launcher-sub mb-1">
+                <span class="text-rose-400 flex items-center gap-1">
+                  <i class="fa-solid fa-heart text-[10px]"></i> HP
+                </span>
+                <span id="hpText" class="text-slate-200">15,400 / 15,400</span>
+              </div>
+              <div class="w-full bg-slate-950 h-3 border border-rose-900/60 p-0.5 overflow-hidden">
+                <div id="hpBar" class="bg-gradient-to-r from-rose-600 to-red-400 h-full transition-all duration-500 shadow-sm shadow-rose-500" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- MP Bar -->
+            <div>
+              <div class="flex justify-between text-xs font-launcher-sub mb-1">
+                <span class="text-cyan-400 flex items-center gap-1">
+                  <i class="fa-solid fa-bolt text-[10px]"></i> MP
+                </span>
+                <span id="mpText" class="text-slate-200">9,800 / 9,800</span>
+              </div>
+              <div class="w-full bg-slate-950 h-3 border border-blue-900/60 p-0.5 overflow-hidden">
+                <div id="mpBar" class="bg-gradient-to-r from-blue-700 via-system-blue to-cyan-300 h-full transition-all duration-500 shadow-sm shadow-blue-500" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATS ALLOCATION SECTION -->
+          <div class="border-t border-system-blue/30 pt-4">
+            <div class="flex justify-between items-center mb-3">
+              <span class="font-launcher-sub text-xs text-slate-300">ABILITY STATS</span>
+              <div class="bg-blue-950/80 border border-blue-500/50 px-2.5 py-1 font-launcher text-xs">
+                AVAILABLE POINTS: <span id="statPointsDisplay" class="text-yellow-400 text-sm ml-1">5</span>
+              </div>
+            </div>
+
+            <!-- Stats List -->
+            <div class="space-y-2">
+              
+              <!-- STRENGTH -->
+              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-hand-fist text-rose-400 w-4 text-center"></i>
+                  <span class="font-launcher-sub text-xs text-slate-300">STRENGTH</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span id="statStr" class="font-launcher text-sm text-system-blue">284</span>
+                  <button onclick="allocateStat('str')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- VITALITY -->
+              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-shield-heart text-emerald-400 w-4 text-center"></i>
+                  <span class="font-launcher-sub text-xs text-slate-300">VITALITY</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span id="statVit" class="font-launcher text-sm text-system-blue">230</span>
+                  <button onclick="allocateStat('vit')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- AGILITY -->
+              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-person-running text-amber-400 w-4 text-center"></i>
+                  <span class="font-launcher-sub text-xs text-slate-300">AGILITY</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span id="statAgi" class="font-launcher text-sm text-system-blue">265</span>
+                  <button onclick="allocateStat('agi')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- INTELLIGENCE -->
+              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-brain text-blue-400 w-4 text-center"></i>
+                  <span class="font-launcher-sub text-xs text-slate-300">INTELLIGENCE</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span id="statInt" class="font-launcher text-sm text-system-blue">290</span>
+                  <button onclick="allocateStat('int')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <!-- SENSE -->
+              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-eye text-cyan-400 w-4 text-center"></i>
+                  <span class="font-launcher-sub text-xs text-slate-300">SENSE</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span id="statSen" class="font-launcher text-sm text-system-blue">220</span>
+                  <button onclick="allocateStat('sen')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
+                    +
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="mt-4">
+              <button onclick="resetStats()" class="w-full py-2 bg-slate-950 border border-slate-800 hover:border-system-blue text-xs font-launcher-sub text-slate-300 transition-all">
+                RESET STATS
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- LOGOUT BUTTON -->
+        <button 
+          onclick="handleLogout()"
+          class="w-full py-3 bg-red-950/40 border border-system-red/60 hover:bg-system-red hover:text-slate-950 text-system-red font-launcher text-xs clip-system-btn transition-all duration-300 flex items-center justify-center space-x-2 glow-red"
+        >
+          <i class="fa-solid fa-power-off"></i>
+          <span>DISCONNECT SYSTEM</span>
+        </button>
+
+      </section>
+
+      <!-- RIGHT COLUMN: QUEST & SYSTEM MODULES -->
+      <section class="lg:col-span-7 flex flex-col space-y-6">
+        
+        <!-- DAILY QUEST WIDGET -->
+        <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue backdrop-blur-xl relative">
+          
+          <!-- Quest Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-system-blue/40 pb-3 mb-4 gap-2">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-scroll text-yellow-400"></i>
+              <span class="font-launcher text-xs md:text-sm text-yellow-400 text-glow-blue">
+                DAILY QUEST: PREPARATION TO BECOME STRONG
+              </span>
+            </div>
+            <span id="questStatusTag" class="text-[10px] font-launcher-sub bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 px-2 py-0.5">
+              IN PROGRESS
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-300 mb-4 font-launcher-sub">
+            WARNING: FAILURE TO COMPLETE THE DAILY QUEST WILL TRIGGER PENALTY SYSTEM.
+          </p>
+
+          <!-- Quest Exercises List -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+            
+            <!-- Push-ups -->
+            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-launcher-sub text-xs text-slate-200">PUSH-UPS</span>
+                <span id="cntPushups" class="font-launcher text-xs text-system-blue">0 / 100</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="incrementQuest('pushups', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +10 REPS
+                </button>
+                <button onclick="incrementQuest('pushups', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +50 REPS
+                </button>
+              </div>
+            </div>
+
+            <!-- Sit-ups -->
+            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-launcher-sub text-xs text-slate-200">SIT-UPS</span>
+                <span id="cntSitups" class="font-launcher text-xs text-system-blue">0 / 100</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="incrementQuest('situps', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +10 REPS
+                </button>
+                <button onclick="incrementQuest('situps', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +50 REPS
+                </button>
+              </div>
+            </div>
+
+            <!-- Squats -->
+            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-launcher-sub text-xs text-slate-200">SQUATS</span>
+                <span id="cntSquats" class="font-launcher text-xs text-system-blue">0 / 100</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="incrementQuest('squats', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +10 REPS
+                </button>
+                <button onclick="incrementQuest('squats', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +50 REPS
+                </button>
+              </div>
+            </div>
+
+            <!-- 10km Run -->
+            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-launcher-sub text-xs text-slate-200">10KM RUN</span>
+                <span id="cntRun" class="font-launcher text-xs text-system-blue">0 / 10 KM</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button onclick="incrementQuest('run', 2)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +2 KM
+                </button>
+                <button onclick="incrementQuest('run', 5)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                  +5 KM
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Total Quest Progress Bar -->
+          <div class="mb-4">
+            <div class="flex justify-between text-xs font-launcher-sub mb-1">
+              <span class="text-slate-300">TOTAL QUEST COMPLETION</span>
+              <span id="questPercent" class="text-yellow-400 font-launcher">0%</span>
+            </div>
+            <div class="w-full bg-slate-950 h-3 border border-yellow-600/40 p-0.5 overflow-hidden">
+              <div id="questProgressBar" class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-300 h-full transition-all duration-300 shadow-sm shadow-yellow-500" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Claim Reward Button -->
+          <button 
+            id="claimRewardBtn"
+            disabled
+            onclick="claimQuestRewards()"
+            class="w-full py-3 bg-slate-900 opacity-50 border border-slate-800 text-slate-500 font-launcher text-xs clip-system-btn transition-all duration-300 flex items-center justify-center space-x-2 cursor-not-allowed"
+          >
+            <i class="fa-solid fa-gift"></i>
+            <span>CLAIM QUEST REWARDS</span>
+          </button>
+
+        </div>
+
+        <!-- ACTIVE SKILLS & SHADOW ARMY MODULE -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <!-- SKILLS WINDOW -->
+          <div class="bg-system-card border border-blue-500/50 clip-system-box p-4 glow-electric backdrop-blur-xl">
+            <div class="flex items-center justify-between border-b border-blue-500/30 pb-2 mb-3">
+              <span class="font-launcher text-xs text-blue-400">
+                ACTIVE SKILLS
+              </span>
+              <i class="fa-solid fa-wand-magic-sparkles text-blue-400 text-xs"></i>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="p-2 bg-slate-950/70 border border-blue-900/40 flex items-center justify-between">
+                <div>
+                  <div class="font-launcher text-blue-300 text-xs">SHADOW EXTRACTION</div>
+                  <div class="text-[10px] text-slate-400">Extract shadow soldiers from corpses</div>
+                </div>
+                <span class="text-[10px] font-launcher bg-blue-950 text-blue-300 border border-blue-700 px-1.5 py-0.5">LV. MAX</span>
+              </div>
+
+              <div class="p-2 bg-slate-950/70 border border-blue-900/40 flex items-center justify-between">
+                <div>
+                  <div class="font-launcher text-blue-300 text-xs">MONARCH'S DOMAIN</div>
+                  <div class="text-[10px] text-slate-400">+50% shadow soldier stats in domain</div>
+                </div>
+                <span class="text-[10px] font-launcher bg-blue-950 text-blue-300 border border-blue-700 px-1.5 py-0.5">LV. MAX</span>
+              </div>
+
+              <div class="p-2 bg-slate-950/70 border border-cyan-900/40 flex items-center justify-between">
+                <div>
+                  <div class="font-launcher text-cyan-300 text-xs">DOMINATOR'S TOUCH</div>
+                  <div class="text-[10px] text-slate-400">Control objects with telekinesis</div>
+                </div>
+                <span class="text-[10px] font-launcher bg-cyan-950 text-cyan-300 border border-cyan-700 px-1.5 py-0.5">LV. 2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SHADOW ARMY TERMINAL -->
+          <div class="bg-system-card border border-system-blue/50 clip-system-box p-4 glow-blue backdrop-blur-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-system-blue/30 pb-2 mb-3">
+                <span class="font-launcher text-xs text-system-blue">
+                  SHADOW ARMY COMMAND
+                </span>
+                <i class="fa-solid fa-ghost text-system-blue text-xs"></i>
+              </div>
+
+              <div class="text-xs text-slate-300 space-y-1.5 mb-4 font-launcher-sub">
+                <div class="flex justify-between">
+                  <span>SAVED SOLDIERS:</span>
+                  <span class="font-launcher text-system-blue">130,000+</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>COMMANDERS:</span>
+                  <span class="font-launcher text-blue-400">IGRIS / BERU / BELLION</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ARISE / SUMMON BUTTON -->
+            <button 
+              onclick="summonShadows()"
+              class="w-full py-2.5 bg-gradient-to-r from-blue-900 via-indigo-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-500 text-white font-launcher text-xs clip-system-btn transition-all duration-300 shadow-md shadow-blue-900/50 flex items-center justify-center space-x-2 active:scale-95"
+            >
+              <i class="fa-solid fa-skull text-blue-300"></i>
+              <span>ARISE (EXTRACT SHADOWS)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- INVENTORY QUICK BAR -->
+        <div class="bg-system-card border border-system-blue/40 clip-system-box p-4 glow-blue backdrop-blur-xl">
+          <div class="flex items-center justify-between border-b border-system-blue/30 pb-2 mb-3">
+            <span class="font-launcher text-xs text-system-blue">
+              INVENTORY VAULT
+            </span>
+            <span class="text-[10px] font-launcher-sub text-slate-400">SLOTS: 6 / 100</span>
+          </div>
+
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div title="Rasaka's Dagger" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-dagger text-rose-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Rasaka Dagger</span>
+            </div>
+            <div title="Demon King's Longsword" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-wand-magic text-yellow-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Demon Sword</span>
+            </div>
+            <div title="Elixir of Life" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-flask text-emerald-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Holy Water</span>
+            </div>
+            <div title="Cartenon Temple Key" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-key text-blue-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Dungeon Key</span>
+            </div>
+            <div title="Teleportation Stone" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-gem text-cyan-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Teleport Gem</span>
+            </div>
+            <div title="Shadow Monarch Ring" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
+              <i class="fa-solid fa-ring text-indigo-400 text-lg mb-1"></i>
+              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Monarch Ring</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SYSTEM MODAL -->
+  <div id="systemModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-system-card border-2 border-system-blue clip-system-box p-6 max-w-md w-full glow-blue-strong relative transform transition-all scale-95">
+      <div class="flex items-center space-x-2 border-b border-system-blue/40 pb-3 mb-4">
+        <i class="fa-solid fa-circle-check text-system-blue text-lg"></i>
+        <h3 id="modalTitle" class="font-launcher text-sm text-system-blue text-glow-blue">
+          SYSTEM NOTIFICATION
+        </h3>
+      </div>
+      <p id="modalMessage" class="text-xs md:text-sm text-slate-200 font-launcher-sub mb-6 leading-relaxed">
+        Message contents...
+      </p>
+      <button 
+        onclick="closeSystemModal()"
+        class="w-full py-2.5 bg-system-blue text-slate-950 font-launcher text-xs clip-system-btn hover:bg-cyan-300 transition-all"
+      >
+        CONFIRM
+      </button>
     </div>
   </div>
 
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT LOGIC ENGINE -->
+  <!-- ========================================================================= -->
   <script>
-    const STORAGE_KEY = "cliffs_toefl_topics_v4";
-    const THEME_KEY = "cliffs_toefl_theme";
-    const PASSCODE_KEY = "cliffs_toefl_passcode";
+    /* -------------------------------------------------------------------------
+     * 1. AUTOMATIC AUDIO SYNTHESIZER (Triggers sound on EVERY button interaction)
+     * ------------------------------------------------------------------------- */
+    let audioCtx = null;
 
-    const defaultTopics = [
-      { id: "1", no: "Topic 01", name: "Subject-Verb Agreement", file: "notes/topic-01.html", completed: false },
-      { id: "2", no: "Topic 02", name: "Pronoun Antecedent & Case", file: "notes/topic-02.html", completed: false },
-      { id: "3", no: "Topic 03", name: "Misplaced & Dangling Modifiers", file: "notes/topic-03.html", completed: false },
-      { id: "4", no: "Topic 04", name: "Parallel Structure", file: "notes/topic-04.html", completed: false }
-    ];
-
-    let topics = [];
-    let isLocked = true;
-    let passcode = "kaikobadisbest";
-
-    // Passcode Logic
-    function initPasscode() {
-      localStorage.setItem(PASSCODE_KEY, passcode);
-    }
-
-    function toggleLock() {
-      if (isLocked) {
-        const input = prompt("Enter passcode to unlock Edit Mode:");
-        if (input === passcode) {
-          isLocked = false;
-          alert("Unlocked! Edit mode activated.");
-        } else if (input !== null) {
-          alert("Incorrect passcode!");
+    function playTechBeep(freq = 1100, duration = 0.05, type = 'sine') {
+      try {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) audioCtx = new AudioContext();
         }
-      } else {
-        isLocked = true;
-      }
-      updateLockUI();
-    }
-
-    function updateLockUI() {
-      const lockBtn = document.getElementById("lockBtn");
-      const lockIcon = document.getElementById("lockIcon");
-      const lockLabel = document.getElementById("lockLabel");
-      const formCard = document.getElementById("formCard");
-      const actionHeader = document.querySelector(".action-col-header");
-
-      if (isLocked) {
-        lockBtn.className = "btn-control btn-lock locked";
-        lockIcon.textContent = "🔒";
-        lockLabel.textContent = "Locked";
-        formCard.classList.add("hidden");
-        if (actionHeader) actionHeader.classList.add("action-col-hidden");
-      } else {
-        lockBtn.className = "btn-control btn-lock unlocked";
-        lockIcon.textContent = "🔓";
-        lockLabel.textContent = "Unlocked Mode";
-        formCard.classList.remove("hidden");
-        if (actionHeader) actionHeader.classList.remove("action-col-hidden");
-      }
-      updateUI();
-    }
-
-    // Theme Switch
-    function initTheme() {
-      const savedTheme = localStorage.getItem(THEME_KEY) || "light";
-      applyTheme(savedTheme);
-    }
-
-    function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute("data-theme");
-      const newTheme = currentTheme === "dark" ? "light" : "dark";
-      applyTheme(newTheme);
-      localStorage.setItem(THEME_KEY, newTheme);
-    }
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-      const themeIcon = document.getElementById("themeIcon");
-      const themeLabel = document.getElementById("themeLabel");
-      if (theme === "dark") {
-        themeIcon.textContent = "☀️";
-        themeLabel.textContent = "Light Mode";
-      } else {
-        themeIcon.textContent = "🌙";
-        themeLabel.textContent = "Dark Mode";
-      }
-    }
-
-    // Data handling
-    function loadTopics() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        try {
-          topics = JSON.parse(stored);
-        } catch (e) {
-          topics = [...defaultTopics];
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
         }
-      } else {
-        topics = [...defaultTopics];
-        saveTopics();
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Attach sound automatically to every button click or touch in the site
+    document.addEventListener('click', (e) => {
+      const targetBtn = e.target.closest('button') || e.target.closest('input[type="submit"]');
+      if (targetBtn) {
+        playTechBeep(1250, 0.05);
       }
-    }
-
-    function saveTopics() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(topics));
-      updateUI();
-    }
-
-    function updateUI() {
-      const total = topics.length;
-      const completedCount = topics.filter(t => t.completed).length;
-      const percentage = total === 0 ? 0 : Math.round((completedCount / total) * 100);
-
-      const progressBar = document.getElementById("progressBar");
-      const completionText = document.getElementById("completionText");
-      
-      progressBar.style.width = percentage + "%";
-      completionText.textContent = `${percentage}% (${completedCount}/${total})`;
-
-      const tbody = document.getElementById("topicsTableBody");
-      tbody.innerHTML = "";
-
-      if (total === 0) {
-        tbody.innerHTML = `<tr><td colspan="${isLocked ? 3 : 4}" class="empty-state">No topics available. Unlock to add.</td></tr>`;
-        return;
-      }
-
-      topics.forEach((topic) => {
-        const tr = document.createElement("tr");
-        if (topic.completed) {
-          tr.classList.add("completed-row");
-        }
-
-        const filePath = topic.file ? topic.file : `#`;
-
-        tr.innerHTML = `
-          <td style="text-align: center;">
-            <input type="checkbox" class="checkbox-custom" ${topic.completed ? "checked" : ""} onchange="toggleComplete('${topic.id}')" />
-          </td>
-          <td><strong>${escapeHtml(topic.no)}</strong></td>
-          <td>
-            <a href="${escapeHtml(filePath)}" class="topic-link">${escapeHtml(topic.name)}</a>
-          </td>
-          ${!isLocked ? `
-          <td>
-            <button class="btn-delete" onclick="deleteTopic('${topic.id}')" title="Delete Topic">✕</button>
-          </td>` : ''}
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function toggleComplete(id) {
-      topics = topics.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-      saveTopics();
-    }
-
-    document.getElementById("topicForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const noInput = document.getElementById("topicNo");
-      const nameInput = document.getElementById("topicName");
-      const fileInput = document.getElementById("topicFile");
-
-      let fileVal = fileInput.value.trim();
-      if (!fileVal) {
-        const cleanNo = noInput.value.trim().toLowerCase().replace(/\s+/g, '-');
-        fileVal = `notes/${cleanNo}.html`;
-      }
-
-      const newTopic = {
-        id: Date.now().toString(),
-        no: noInput.value.trim(),
-        name: nameInput.value.trim(),
-        file: fileVal,
-        completed: false
-      };
-
-      topics.push(newTopic);
-      saveTopics();
-
-      noInput.value = "";
-      nameInput.value = "";
-      fileInput.value = "";
     });
 
-    function deleteTopic(id) {
-      if (confirm("Are you sure you want to delete this topic?")) {
-        topics = topics.filter(t => t.id !== id);
-        saveTopics();
-      }
-    }
-
-    function escapeHtml(text) {
-      return text.replace(/[&<>"']/g, function(m) {
-        return {
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#039;'
-        }[m];
+    function playAccessGrantedSound() {
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((freq, index) => {
+        setTimeout(() => playTechBeep(freq, 0.09, 'triangle'), index * 70);
       });
     }
 
-    // Initialization
-    initPasscode();
-    initTheme();
-    loadTopics();
-    updateLockUI();
+    function playAccessDeniedSound() {
+      playTechBeep(130, 0.22, 'sawtooth');
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 2. REAL-TIME CLOCK (12-Hour format with AM/PM)
+     * ------------------------------------------------------------------------- */
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Hour 0 becomes 12
+      const hoursStr = String(hours).padStart(2, '0');
+
+      const clockElem = document.getElementById('systemTime');
+      if (clockElem) {
+        clockElem.innerText = `${hoursStr}:${minutes}:${seconds} ${ampm}`;
+      }
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 3. LOCALSTORAGE & SYSTEM DATA STATE
+     * ------------------------------------------------------------------------- */
+    const DEFAULT_SYSTEM_DATA = {
+      level: 120,
+      fatigue: 0,
+      hpCurrent: 15400,
+      hpMax: 15400,
+      mpCurrent: 9800,
+      mpMax: 9800,
+      availablePoints: 5,
+      stats: {
+        str: 284,
+        vit: 230,
+        agi: 265,
+        int: 290,
+        sen: 220
+      },
+      quest: {
+        pushups: 0,
+        situps: 0,
+        squats: 0,
+        run: 0,
+        claimed: false
+      }
+    };
+
+    let systemData = JSON.parse(JSON.stringify(DEFAULT_SYSTEM_DATA));
+
+    function loadSystemData() {
+      const saved = localStorage.getItem('sl_system_data');
+      if (saved) {
+        try {
+          systemData = JSON.parse(saved);
+        } catch (e) {
+          systemData = JSON.parse(JSON.stringify(DEFAULT_SYSTEM_DATA));
+        }
+      }
+    }
+
+    function saveSystemData() {
+      localStorage.setItem('sl_system_data', JSON.stringify(systemData));
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 4. AUTHENTICATION (User enters credentials: kaikobad / kaikobad)
+     * ------------------------------------------------------------------------- */
+    function checkAuthStatus() {
+      const isAuthenticated = localStorage.getItem('sl_system_auth') === 'true';
+      const currentUser = localStorage.getItem('sl_user');
+
+      const authView = document.getElementById('authView');
+      const dashboardView = document.getElementById('dashboardView');
+      const playerNameDisplay = document.getElementById('playerNameDisplay');
+
+      if (isAuthenticated && currentUser) {
+        authView.classList.add('hidden');
+        dashboardView.classList.remove('hidden');
+        if (playerNameDisplay) playerNameDisplay.innerText = currentUser.toUpperCase();
+        loadSystemData();
+        renderDashboard();
+      } else {
+        authView.classList.remove('hidden');
+        dashboardView.classList.add('hidden');
+        // Clear input values when returning to login
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const userInput = document.getElementById('loginUsername').value.trim();
+      const passInput = document.getElementById('loginPassword').value.trim();
+      const errorBox = document.getElementById('loginErrorBox');
+
+      if (userInput.toLowerCase() === 'kaikobad' && passInput === 'kaikobad') {
+        errorBox.classList.add('hidden');
+        
+        localStorage.setItem('sl_system_auth', 'true');
+        localStorage.setItem('sl_user', userInput);
+
+        playAccessGrantedSound();
+
+        showSystemModal(
+          'AUTHENTICATION SUCCESSFUL', 
+          `HUNTER SYNC INITIALIZED FOR PLAYER: ${userInput.toUpperCase()}. WELCOME BACK.`
+        );
+
+        setTimeout(() => {
+          closeSystemModal();
+          checkAuthStatus();
+        }, 1000);
+
+      } else {
+        playAccessDeniedSound();
+        errorBox.classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('sl_system_auth');
+      localStorage.removeItem('sl_user');
+      checkAuthStatus();
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 5. DASHBOARD & STAT ALLOCATION
+     * ------------------------------------------------------------------------- */
+    function renderDashboard() {
+      document.getElementById('playerLevelDisplay').innerText = systemData.level;
+      document.getElementById('playerFatigueDisplay').innerText = systemData.fatigue;
+      document.getElementById('statPointsDisplay').innerText = systemData.availablePoints;
+      
+      document.getElementById('statStr').innerText = systemData.stats.str;
+      document.getElementById('statVit').innerText = systemData.stats.vit;
+      document.getElementById('statAgi').innerText = systemData.stats.agi;
+      document.getElementById('statInt').innerText = systemData.stats.int;
+      document.getElementById('statSen').innerText = systemData.stats.sen;
+
+      document.getElementById('hpText').innerText = `${systemData.hpCurrent.toLocaleString()} / ${systemData.hpMax.toLocaleString()}`;
+      document.getElementById('mpText').innerText = `${systemData.mpCurrent.toLocaleString()} / ${systemData.mpMax.toLocaleString()}`;
+
+      renderQuest();
+    }
+
+    function allocateStat(statKey) {
+      if (systemData.availablePoints > 0) {
+        systemData.stats[statKey] += 1;
+        systemData.availablePoints -= 1;
+
+        if (statKey === 'vit') systemData.hpMax += 100;
+        if (statKey === 'int') systemData.mpMax += 80;
+
+        saveSystemData();
+        renderDashboard();
+      } else {
+        playAccessDeniedSound();
+        showSystemModal('STAT ALLOCATION NOTICE', 'NO AVAILABLE STAT POINTS REMAINING. COMPLETE DAILY QUESTS TO EARN MORE.');
+      }
+    }
+
+    function resetStats() {
+      systemData = JSON.parse(JSON.stringify(DEFAULT_SYSTEM_DATA));
+      saveSystemData();
+      renderDashboard();
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 6. DAILY QUEST TRACKER LOGIC
+     * ------------------------------------------------------------------------- */
+    function renderQuest() {
+      const q = systemData.quest;
+      document.getElementById('cntPushups').innerText = `${q.pushups} / 100`;
+      document.getElementById('cntSitups').innerText = `${q.situps} / 100`;
+      document.getElementById('cntSquats').innerText = `${q.squats} / 100`;
+      document.getElementById('cntRun').innerText = `${q.run} / 10 KM`;
+
+      const pP = Math.min(100, q.pushups);
+      const sP = Math.min(100, q.situps);
+      const sqP = Math.min(100, q.squats);
+      const rP = Math.min(10, q.run) * 10;
+
+      const totalPercentage = Math.round((pP + sP + sqP + rP) / 4);
+      
+      const questProgressBar = document.getElementById('questProgressBar');
+      const questPercent = document.getElementById('questPercent');
+      const claimBtn = document.getElementById('claimRewardBtn');
+      const statusTag = document.getElementById('questStatusTag');
+
+      questProgressBar.style.width = `${totalPercentage}%`;
+      questPercent.innerText = `${totalPercentage}%`;
+
+      if (totalPercentage >= 100) {
+        if (q.claimed) {
+          statusTag.innerText = 'CLAIMED';
+          statusTag.className = 'text-[10px] font-launcher-sub bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5';
+          claimBtn.disabled = true;
+          claimBtn.className = 'w-full py-3 bg-slate-900 opacity-60 border border-slate-800 text-slate-500 font-launcher text-xs clip-system-btn cursor-not-allowed';
+          claimBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>QUEST REWARDS CLAIMED</span>';
+        } else {
+          statusTag.innerText = 'COMPLETED';
+          statusTag.className = 'text-[10px] font-launcher-sub bg-system-blue/20 text-system-blue border border-system-blue/50 px-2 py-0.5 animate-pulse';
+          claimBtn.disabled = false;
+          claimBtn.className = 'w-full py-3 bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-500 hover:from-yellow-400 text-slate-950 font-launcher text-xs clip-system-btn transition-all duration-300 cursor-pointer shadow-lg shadow-yellow-500/30 active:scale-95 glow-blue';
+        }
+      } else {
+        statusTag.innerText = 'IN PROGRESS';
+        statusTag.className = 'text-[10px] font-launcher-sub bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 px-2 py-0.5';
+        claimBtn.disabled = true;
+        claimBtn.className = 'w-full py-3 bg-slate-900 opacity-50 border border-slate-800 text-slate-500 font-launcher text-xs clip-system-btn cursor-not-allowed';
+      }
+    }
+
+    function incrementQuest(key, val) {
+      if (key === 'run') {
+        systemData.quest.run = Math.min(10, systemData.quest.run + val);
+      } else {
+        systemData.quest[key] = Math.min(100, systemData.quest[key] + val);
+      }
+      saveSystemData();
+      renderDashboard();
+    }
+
+    function claimQuestRewards() {
+      if (systemData.quest.claimed) return;
+
+      systemData.quest.claimed = true;
+      systemData.availablePoints += 5;
+      systemData.level += 1;
+      systemData.hpCurrent = systemData.hpMax;
+      systemData.mpCurrent = systemData.mpMax;
+      systemData.fatigue = 0;
+
+      saveSystemData();
+      renderDashboard();
+
+      showSystemModal(
+        'QUEST REWARDS OBTAINED',
+        'FULL HP/MP RECOVERY\n+5 STAT POINTS ALLOCATED\nLEVEL INCREASED TO ' + systemData.level
+      );
+    }
+
+    function summonShadows() {
+      triggerManaBurst();
+      showSystemModal(
+        'ARISE',
+        'COMMAND RECEIVED. SHADOW ARMY SOLDIERS (IGRIS, BERU, BELLION & 130,000 SOLDIERS) STAND READY.'
+      );
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 7. MODAL HANDLER
+     * ------------------------------------------------------------------------- */
+    function showSystemModal(title, msg) {
+      const modal = document.getElementById('systemModal');
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalMessage').innerText = msg;
+      modal.classList.remove('hidden');
+    }
+
+    function closeSystemModal() {
+      document.getElementById('systemModal').classList.add('hidden');
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 8. CANVAS DARK BLUE MANA PARTICLES & CYBER GRID
+     * ------------------------------------------------------------------------- */
+    const canvas = document.getElementById('manaCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let width = 0;
+    let height = 0;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.radius = Math.random() * 2.2 + 0.5;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = -Math.random() * 0.8 - 0.2;
+        this.alpha = Math.random() * 0.65 + 0.2;
+        // Dark Blue Palette
+        const blueShades = ['#00d2ff', '#3b82f6', '#60a5fa', '#1d4ed8'];
+        this.color = blueShades[Math.floor(Math.random() * blueShades.length)];
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.y < 0 || this.x < 0 || this.x > width) {
+          this.reset();
+          this.y = height;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.color;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function initCanvas() {
+      resizeCanvas();
+      particles = [];
+      const particleCount = Math.floor((width * height) / 11000);
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function triggerManaBurst() {
+      for (let i = 0; i < 35; i++) {
+        const p = new Particle();
+        p.x = width / 2;
+        p.y = height / 2;
+        p.vx = (Math.random() - 0.5) * 6;
+        p.vy = (Math.random() - 0.5) * 6;
+        p.radius = Math.random() * 3.5 + 1;
+        particles.push(p);
+      }
+    }
+
+    function animateCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Deep Dark Blue Cyber Grid Lines
+      ctx.strokeStyle = 'rgba(0, 210, 255, 0.035)';
+      ctx.lineWidth = 1;
+      const gridSize = 60;
+
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(animateCanvas);
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 9. INITIALIZATION
+     * ------------------------------------------------------------------------- */
+    window.addEventListener('resize', resizeCanvas);
+
+    window.onload = function() {
+      initCanvas();
+      animateCanvas();
+
+      // Start 12-hour AM/PM real-time clock
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      // Check LocalStorage Auth State
+      checkAuthStatus();
+    };
   </script>
 </body>
 </html>
