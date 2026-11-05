@@ -235,9 +235,9 @@
         <div id="systemTime" class="font-launcher text-sm md:text-base text-cyan-300 tracking-wider">
           --:--:-- --
         </div>
-        <button onclick="openCloudConfigModal()" class="flex items-center justify-end space-x-1.5 font-launcher-sub text-[10px] text-blue-400 hover:text-cyan-300 transition-colors cursor-pointer">
-          <span id="syncIndicator" class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-          <span id="syncText">SYNC SETTINGS</span>
+        <button onclick="openSyncHubModal()" class="flex items-center justify-end space-x-1.5 font-launcher-sub text-[10px] text-blue-400 hover:text-cyan-300 transition-colors cursor-pointer">
+          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span>SYNC DEVICE</span>
         </button>
       </div>
     </header>
@@ -916,44 +916,64 @@
     </div>
   </div>
 
-  <!-- CLOUD SYNC CONFIGURATION MODAL (FOR VERCEL DEPLOYMENT) -->
-  <div id="cloudConfigModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-system-card border-2 border-system-blue clip-system-box p-6 max-w-md w-full glow-blue relative">
-      <div class="flex items-center space-x-2 border-b border-system-blue/40 pb-3 mb-4">
-        <i class="fa-solid fa-cloud text-system-blue text-lg"></i>
-        <h3 class="font-launcher text-sm text-system-blue text-glow-blue">
-          CLOUD SYNC CONFIGURATION
-        </h3>
+  <!-- ZERO-CONFIG CROSS-DEVICE SYNC HUB MODAL (NO API KEY NEEDED) -->
+  <div id="syncHubModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-system-card border-2 border-system-blue clip-system-box p-6 max-w-md w-full glow-blue relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-system-blue/40 pb-3 mb-4">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-qrcode text-system-blue text-lg"></i>
+          <h3 class="font-launcher text-sm text-system-blue text-glow-blue">
+            CROSS-DEVICE SYNC HUB
+          </h3>
+        </div>
+        <button onclick="closeSyncHubModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
       </div>
+      
       <p class="text-xs text-slate-300 font-launcher-sub mb-4 leading-relaxed">
-        ON VERCEL, PASTE YOUR FIREBASE CONFIG JSON BELOW TO ENABLE LIVE CROSS-DEVICE SYNC BETWEEN PHONE & PC:
+        SCAN QR CODE WITH YOUR PHONE OR COPY LINK TO TRANSFER PLAYER PROGRESS INSTANTLY:
       </p>
-      <form onsubmit="saveFirebaseConfig(event)" class="space-y-4">
-        <div>
-          <textarea 
-            id="firebaseConfigInput" 
-            rows="5"
-            placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "...", "storageBucket": "...", "messagingSenderId": "...", "appId": "..."}'
-            class="w-full px-3 py-2 system-input-field text-xs font-mono"
-          ></textarea>
-        </div>
-        
-        <div class="flex items-center space-x-2 pt-2">
+
+      <!-- QR CODE CONTAINER -->
+      <div class="flex flex-col items-center justify-center bg-slate-950 p-4 border border-system-blue/30 mb-4">
+        <img id="syncQrCodeImg" src="" alt="Sync QR Code" class="w-44 h-44 bg-white p-2 border border-cyan-400 shadow-md">
+        <span class="text-[10px] font-launcher-sub text-slate-400 mt-2">SCAN WITH PHONE CAMERA</span>
+      </div>
+
+      <!-- DIRECT SYNC LINK BUTTON -->
+      <button 
+        onclick="copySyncLink()" 
+        class="w-full py-2.5 mb-4 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn hover:from-blue-600 hover:to-cyan-400 transition-all flex items-center justify-center space-x-2"
+      >
+        <i class="fa-solid fa-link"></i>
+        <span>COPY SYNC LINK TO CLIPBOARD</span>
+      </button>
+
+      <!-- MANUAL CODE EXPORT / IMPORT -->
+      <div class="border-t border-system-blue/30 pt-4 space-y-3">
+        <div class="text-[11px] font-launcher-sub text-blue-300">MANUAL CODE EXPORT & IMPORT:</div>
+        <input 
+          type="text" 
+          id="syncCodeInput" 
+          placeholder="Paste Sync Code Here..." 
+          class="w-full px-3 py-2 system-input-field text-xs font-mono"
+        >
+        <div class="flex items-center space-x-2">
           <button 
-            type="button" 
-            onclick="closeCloudConfigModal()" 
-            class="flex-1 py-2 bg-slate-900 border border-slate-700 text-slate-400 font-launcher text-xs clip-system-btn hover:bg-slate-800 transition-all"
+            onclick="exportSyncCode()" 
+            class="flex-1 py-2 bg-slate-900 border border-slate-700 text-cyan-400 font-launcher text-[11px] clip-system-btn hover:bg-slate-800 transition-all"
           >
-            CANCEL
+            COPY CODE
           </button>
           <button 
-            type="submit" 
-            class="flex-1 py-2 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn hover:from-blue-600 hover:to-cyan-400 transition-all"
+            onclick="importSyncCode()" 
+            class="flex-1 py-2 bg-emerald-500/20 border border-emerald-500/60 text-emerald-300 font-launcher text-[11px] clip-system-btn hover:bg-emerald-500 hover:text-slate-950 transition-all"
           >
-            SAVE CONFIG
+            IMPORT CODE
           </button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -1254,84 +1274,108 @@
 
     function saveAspectScores() {
       localStorage.setItem('sl_aspect_scores', JSON.stringify(aspectScores));
-      syncToCloud('aspects', aspectScores);
     }
 
     function saveSystemData() {
       localStorage.setItem('sl_system_data', JSON.stringify(systemData));
-      syncToCloud('stats', systemData);
     }
 
     /* -------------------------------------------------------------------------
-     * CLOUD REALTIME SYNC ENGINE (PC & PHONE VERCEL SYNC)
+     * ZERO-CONFIG CROSS-DEVICE SYNC ENGINE (QR & URL HASH & DATA CODES)
      * ------------------------------------------------------------------------- */
-    function syncToCloud(docType, data) {
-      if (!window.firebaseDB || !window.firebaseAuth?.currentUser) return;
-      const userId = localStorage.getItem('sl_user') || 'kaikobad';
-      // Use Public Data Path so both PC and Phone share the same player document regardless of anonymous auth UID
-      const docRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', `player_${docType}`, userId);
-      window.setDocFunc(docRef, data, { merge: true }).catch(err => console.log("Cloud save:", err));
+    function generateSyncPayload() {
+      const payload = {
+        aspects: aspectScores,
+        system: systemData,
+        user: localStorage.getItem('sl_user') || 'kaikobad'
+      };
+      return btoa(encodeURIComponent(JSON.stringify(payload)));
     }
 
-    function initCloudSync() {
-      if (!window.firebaseDB || !window.firebaseAuth?.currentUser) return;
-      const userId = localStorage.getItem('sl_user') || 'kaikobad';
+    function openSyncHubModal() {
+      const payload = generateSyncPayload();
+      const syncUrl = `${window.location.origin}${window.location.pathname}#sync=${payload}`;
       
-      const syncText = document.getElementById('syncText');
-      if (syncText) syncText.innerText = 'CLOUD SYNC ACTIVE';
+      // Generate QR Code via free public SVG generator
+      const qrImg = document.getElementById('syncQrCodeImg');
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(syncUrl)}`;
+      }
 
-      // Realtime listener for Stats & Quests (Public Data Path for cross-device sync)
-      const statsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', 'player_stats', userId);
-      window.cloudUnsubStats = window.onSnapshotFunc(statsRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const cloudData = snapshot.data();
-          systemData = { ...systemData, ...cloudData };
-          localStorage.setItem('sl_system_data', JSON.stringify(systemData));
-          renderDashboard();
-        }
-      }, (err) => console.log("Cloud sync stats:", err));
+      document.getElementById('syncCodeInput').value = payload;
+      document.getElementById('syncHubModal').classList.remove('hidden');
+    }
 
-      // Realtime listener for Life Aspects (Public Data Path for cross-device sync)
-      const aspectsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'public', 'data', 'player_aspects', userId);
-      window.cloudUnsubAspects = window.onSnapshotFunc(aspectsRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const cloudAspects = snapshot.data();
-          aspectScores = { ...aspectScores, ...cloudAspects };
+    function closeSyncHubModal() {
+      document.getElementById('syncHubModal').classList.add('hidden');
+    }
+
+    function copySyncLink() {
+      const payload = generateSyncPayload();
+      const syncUrl = `${window.location.origin}${window.location.pathname}#sync=${payload}`;
+      
+      const dummy = document.createElement('textarea');
+      document.body.appendChild(dummy);
+      dummy.value = syncUrl;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+
+      showSystemModal('SYNC LINK COPIED', 'THE DIRECT SYNC LINK IS COPIED TO YOUR CLIPBOARD. OPEN IT ON YOUR PHONE TO SYNC INSTANTLY!');
+    }
+
+    function exportSyncCode() {
+      const payload = generateSyncPayload();
+      const dummy = document.createElement('textarea');
+      document.body.appendChild(dummy);
+      dummy.value = payload;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+
+      showSystemModal('SYNC CODE COPIED', 'MANUAL DATA CODE COPIED TO CLIPBOARD!');
+    }
+
+    function importSyncCode() {
+      const rawCode = document.getElementById('syncCodeInput').value.trim();
+      if (!rawCode) return;
+      applySyncPayload(rawCode);
+      closeSyncHubModal();
+    }
+
+    function applySyncPayload(encodedStr) {
+      try {
+        const decodedJson = decodeURIComponent(atob(encodedStr));
+        const payload = JSON.parse(decodedJson);
+
+        if (payload.aspects) {
+          aspectScores = { ...aspectScores, ...payload.aspects };
           localStorage.setItem('sl_aspect_scores', JSON.stringify(aspectScores));
-          recalcRelationshipsAvg();
-          syncAspectSelects();
-          recalcPlayerStats();
-          renderDashboard();
         }
-      }, (err) => console.log("Cloud sync aspects:", err));
-    }
-
-    function openCloudConfigModal() {
-      const savedConfig = localStorage.getItem('sl_firebase_config') || '';
-      document.getElementById('firebaseConfigInput').value = savedConfig;
-      document.getElementById('cloudConfigModal').classList.remove('hidden');
-    }
-
-    function closeCloudConfigModal() {
-      document.getElementById('cloudConfigModal').classList.add('hidden');
-    }
-
-    function saveFirebaseConfig(e) {
-      e.preventDefault();
-      const raw = document.getElementById('firebaseConfigInput').value.trim();
-      if (raw) {
-        try {
-          JSON.parse(raw); // Validate JSON format
-          localStorage.setItem('sl_firebase_config', raw);
-          closeCloudConfigModal();
-          showSystemModal('CLOUD CONFIG SAVED', 'FIREBASE CONFIGURATION STORED. REFRESHING PAGE TO ESTABLISH CLOUD CONNECTION...');
-          setTimeout(() => window.location.reload(), 1500);
-        } catch(err) {
-          showSystemModal('INVALID CONFIG', 'PLEASE ENTER VALID FIREBASE CONFIG JSON FORMAT.');
+        if (payload.system) {
+          systemData = { ...systemData, ...payload.system };
+          localStorage.setItem('sl_system_data', JSON.stringify(systemData));
         }
-      } else {
-        localStorage.removeItem('sl_firebase_config');
-        closeCloudConfigModal();
+
+        localStorage.setItem('sl_system_auth', 'true');
+        if (payload.user) localStorage.setItem('sl_user', payload.user);
+
+        recalcRelationshipsAvg();
+        syncAspectSelects();
+        recalcPlayerStats();
+        checkAuthStatus();
+
+        showSystemModal('SYNC COMPLETE', 'PLAYER PROGRESS SUCCESSFULLY IMPORTEED & SYNCED TO THIS DEVICE!');
+      } catch (err) {
+        showSystemModal('SYNC ERROR', 'INVALID OR CORRUPTED SYNC DATA CODE.');
+      }
+    }
+
+    function checkUrlSync() {
+      if (window.location.hash.startsWith('#sync=')) {
+        const encodedStr = window.location.hash.replace('#sync=', '');
+        window.history.replaceState(null, null, window.location.pathname); // Clean URL hash
+        applySyncPayload(encodedStr);
       }
     }
 
@@ -1887,6 +1931,9 @@
     window.onload = function() {
       initCanvas();
       animateCanvas();
+
+      // Check if opened via cross-device sync URL
+      checkUrlSync();
 
       // Start 12-hour AM/PM real-time clock
       updateClock();
