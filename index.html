@@ -16,6 +16,45 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Firebase Cloud Realtime Sync SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'solo-leveling-system';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    if (firebaseConfig) {
+      try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const initAuth = async () => {
+          if (initialAuthToken) {
+            await signInWithCustomToken(auth, initialAuthToken);
+          } else {
+            await signInAnonymously(auth);
+          }
+        };
+
+        initAuth().then(() => {
+          window.firebaseDB = db;
+          window.firebaseAuth = auth;
+          window.appId = appId;
+          window.docFunc = doc;
+          window.setDocFunc = setDoc;
+          window.onSnapshotFunc = onSnapshot;
+          if (window.initCloudSync) window.initCloudSync();
+        }).catch(err => console.log("Firebase Auth:", err));
+      } catch (e) {
+        console.log("Firebase Init fallback:", e);
+      }
+    }
+  </script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -185,8 +224,9 @@
         <div id="systemTime" class="font-launcher text-sm md:text-base text-cyan-300 tracking-wider">
           --:--:-- --
         </div>
-        <div class="font-launcher-sub text-[10px] text-blue-400">
-          SYSTEM ACTIVE
+        <div class="flex items-center justify-end space-x-1.5 font-launcher-sub text-[10px] text-blue-400">
+          <span id="syncIndicator" class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span id="syncText">SYSTEM ACTIVE</span>
         </div>
       </div>
     </header>
@@ -961,11 +1001,9 @@
       e.preventDefault();
       const pwd = document.getElementById('aspectAuthPassword').value.trim();
       if (pwd === 'kaikobad') {
-        playAccessGrantedSound();
         closeAspectAuthModal();
         unlockAspectEditing();
       } else {
-        playAccessDeniedSound();
         document.getElementById('aspectAuthError').classList.remove('hidden');
       }
     }
@@ -1028,8 +1066,6 @@
       renderDashboard();
       lockAspectEditing();
 
-      playAccessGrantedSound();
-
       showSystemModal(
         'LIFE ASPECTS SAVED',
         'ALL ASPECT SCORE MODIFICATIONS HAVE BEEN COMMITTED TO SYSTEM MEMORY AND LOCKED.'
@@ -1037,56 +1073,11 @@
     }
 
     /* -------------------------------------------------------------------------
-     * 1. AUTOMATIC AUDIO SYNTHESIZER
+     * 1. AUDIO SYNTHESIZER (DISABLED / REMOVED)
      * ------------------------------------------------------------------------- */
-    let audioCtx = null;
-
-    function playTechBeep(freq = 1100, duration = 0.05, type = 'sine') {
-      try {
-        if (!audioCtx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) audioCtx = new AudioContext();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-        if (!audioCtx) return;
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {}
-    }
-
-    // Attach sound automatically to every button, select or input click in the site
-    document.addEventListener('click', (e) => {
-      const targetBtn = e.target.closest('button') || e.target.closest('input[type="submit"]') || e.target.closest('select');
-      if (targetBtn) {
-        playTechBeep(1250, 0.05);
-      }
-    });
-
-    function playAccessGrantedSound() {
-      const notes = [523.25, 659.25, 783.99, 1046.50];
-      notes.forEach((freq, index) => {
-        setTimeout(() => playTechBeep(freq, 0.09, 'triangle'), index * 70);
-      });
-    }
-
-    function playAccessDeniedSound() {
-      playTechBeep(130, 0.22, 'sawtooth');
-    }
+    function playTechBeep() {}
+    function playAccessGrantedSound() {}
+    function playAccessDeniedSound() {}
 
 
     /* -------------------------------------------------------------------------
@@ -1211,6 +1202,55 @@
 
     function saveAspectScores() {
       localStorage.setItem('sl_aspect_scores', JSON.stringify(aspectScores));
+      syncToCloud('aspects', aspectScores);
+    }
+
+    function saveSystemData() {
+      localStorage.setItem('sl_system_data', JSON.stringify(systemData));
+      syncToCloud('stats', systemData);
+    }
+
+    /* -------------------------------------------------------------------------
+     * CLOUD REALTIME SYNC ENGINE (PC & PHONE VERCEL SYNC)
+     * ------------------------------------------------------------------------- */
+    function syncToCloud(docType, data) {
+      if (!window.firebaseDB || !window.firebaseAuth?.currentUser) return;
+      const userId = localStorage.getItem('sl_user') || 'kaikobad';
+      const docRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', docType);
+      window.setDocFunc(docRef, data, { merge: true }).catch(err => console.log("Cloud save:", err));
+    }
+
+    function initCloudSync() {
+      if (!window.firebaseDB || !window.firebaseAuth?.currentUser) return;
+      const userId = localStorage.getItem('sl_user') || 'kaikobad';
+      
+      const syncText = document.getElementById('syncText');
+      if (syncText) syncText.innerText = 'CLOUD SYNC ACTIVE';
+
+      // Realtime listener for Stats & Quests
+      const statsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', 'stats');
+      window.cloudUnsubStats = window.onSnapshotFunc(statsRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const cloudData = snapshot.data();
+          systemData = { ...systemData, ...cloudData };
+          localStorage.setItem('sl_system_data', JSON.stringify(systemData));
+          renderDashboard();
+        }
+      }, (err) => console.log("Cloud sync stats:", err));
+
+      // Realtime listener for Life Aspects
+      const aspectsRef = window.docFunc(window.firebaseDB, 'artifacts', window.appId, 'users', userId, 'playerData', 'aspects');
+      window.cloudUnsubAspects = window.onSnapshotFunc(aspectsRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const cloudAspects = snapshot.data();
+          aspectScores = { ...aspectScores, ...cloudAspects };
+          localStorage.setItem('sl_aspect_scores', JSON.stringify(aspectScores));
+          recalcRelationshipsAvg();
+          syncAspectSelects();
+          recalcPlayerStats();
+          renderDashboard();
+        }
+      }, (err) => console.log("Cloud sync aspects:", err));
     }
 
     function recalcRelationshipsAvg() {
@@ -1488,30 +1528,18 @@
      * ------------------------------------------------------------------------- */
     function checkAuthStatus() {
       const isAuthenticated = localStorage.getItem('sl_system_auth') === 'true';
-      const currentUser = localStorage.getItem('sl_user');
-
       const authView = document.getElementById('authView');
       const dashboardView = document.getElementById('dashboardView');
-      const playerNameDisplay = document.getElementById('playerNameDisplay');
 
-      if (isAuthenticated && currentUser) {
-        authView.classList.add('hidden');
-        dashboardView.classList.remove('hidden');
-        if (playerNameDisplay) playerNameDisplay.innerText = currentUser.toUpperCase();
-        loadSystemData();
+      if (isAuthenticated) {
+        if (authView) authView.classList.add('hidden');
+        if (dashboardView) dashboardView.classList.remove('hidden');
         loadAspectScores();
+        loadSystemData();
         renderDashboard();
-        
-        // Trigger radar draw frame after dashboard display state updates
-        requestAnimationFrame(() => {
-          drawRadarChart();
-        });
       } else {
-        authView.classList.remove('hidden');
-        dashboardView.classList.add('hidden');
-        // Clear input values when returning to login screen
-        document.getElementById('loginUsername').value = '';
-        document.getElementById('loginPassword').value = '';
+        if (authView) authView.classList.remove('hidden');
+        if (dashboardView) dashboardView.classList.add('hidden');
       }
     }
 
@@ -1527,8 +1555,6 @@
         localStorage.setItem('sl_system_auth', 'true');
         localStorage.setItem('sl_user', userInput);
 
-        playAccessGrantedSound();
-
         showSystemModal(
           'AUTHENTICATION SUCCESSFUL', 
           `HUNTER SYNC INITIALIZED FOR PLAYER: ${userInput.toUpperCase()}. WELCOME BACK.`
@@ -1540,12 +1566,13 @@
         }, 1000);
 
       } else {
-        playAccessDeniedSound();
         errorBox.classList.remove('hidden');
       }
     }
 
     function handleLogout() {
+      if (window.cloudUnsubStats) window.cloudUnsubStats();
+      if (window.cloudUnsubAspects) window.cloudUnsubAspects();
       localStorage.removeItem('sl_system_auth');
       localStorage.removeItem('sl_user');
       checkAuthStatus();
