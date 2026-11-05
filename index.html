@@ -30,6 +30,7 @@
               deepBlue: '#1e3a8a',
               purple: '#8b5cf6',
               red: '#ff2a5f',
+              green: '#00ff88',
               darkBorder: 'rgba(0, 210, 255, 0.35)'
             }
           },
@@ -79,7 +80,7 @@
       );
     }
 
-    /* Dark Blue Glow Effects */
+    /* Dark Blue & Neon Glow Effects */
     .glow-blue {
       box-shadow: 0 0 25px rgba(0, 210, 255, 0.3), inset 0 0 15px rgba(0, 210, 255, 0.08);
     }
@@ -92,12 +93,18 @@
     .glow-red {
       box-shadow: 0 0 20px rgba(255, 42, 95, 0.5), inset 0 0 15px rgba(255, 42, 95, 0.2);
     }
+    .glow-green {
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4), inset 0 0 15px rgba(0, 255, 136, 0.15);
+    }
 
     .text-glow-blue {
       text-shadow: 0 0 8px rgba(0, 210, 255, 0.8), 0 0 18px rgba(0, 210, 255, 0.4);
     }
-    .text-glow-electric {
-      text-shadow: 0 0 8px rgba(59, 130, 246, 0.8), 0 0 18px rgba(59, 130, 246, 0.4);
+    .text-glow-green {
+      text-shadow: 0 0 8px rgba(0, 255, 136, 0.8), 0 0 16px rgba(0, 255, 136, 0.4);
+    }
+    .text-glow-red {
+      text-shadow: 0 0 8px rgba(255, 42, 95, 0.8), 0 0 16px rgba(255, 42, 95, 0.4);
     }
 
     /* Dark Blue Scanline Texture */
@@ -112,7 +119,7 @@
       background-size: 100% 4px;
     }
 
-    /* Custom Input Style */
+    /* Custom Input & Select Style */
     .system-input-field {
       background: rgba(4, 15, 35, 0.9);
       border: 1px solid rgba(0, 210, 255, 0.35);
@@ -124,6 +131,18 @@
       border-color: #00d2ff;
       box-shadow: 0 0 15px rgba(0, 210, 255, 0.45);
       background: rgba(8, 24, 54, 0.98);
+    }
+
+    .system-select-field {
+      background: rgba(4, 15, 35, 0.9);
+      border: 1px solid rgba(0, 210, 255, 0.35);
+      color: #00d2ff;
+      cursor: pointer;
+    }
+    .system-select-field:focus {
+      outline: none;
+      border-color: #00d2ff;
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
     }
 
     /* Typography Classes */
@@ -265,8 +284,8 @@
     <!-- ========================================================================= -->
     <main id="dashboardView" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 my-4">
       
-      <!-- LEFT COLUMN: PLAYER STATUS WINDOW -->
-      <section class="lg:col-span-5 flex flex-col space-y-5">
+      <!-- LEFT COLUMN: PLAYER STATUS WINDOW & LIFE ASPECTS -->
+      <section class="lg:col-span-6 flex flex-col space-y-5">
         
         <!-- STATUS MAIN WINDOW -->
         <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue relative backdrop-blur-xl">
@@ -284,151 +303,298 @@
             </span>
           </div>
 
-          <!-- Basic Info Header -->
-          <div class="grid grid-cols-2 gap-4 mb-4 bg-slate-950/70 p-3 border border-system-blue/20">
+          <!-- Basic Info Header (Cleaned Labels) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5 bg-slate-950/80 p-3 border border-system-blue/30">
             <div>
               <div class="text-[10px] font-launcher-sub text-slate-400">NAME</div>
-              <div id="playerNameDisplay" class="font-launcher text-lg text-white text-glow-blue">
+              <div id="playerNameDisplay" class="font-launcher text-base text-white text-glow-blue">
                 KAIKOBAD
               </div>
             </div>
             <div>
               <div class="text-[10px] font-launcher-sub text-slate-400">TITLE</div>
-              <div class="font-launcher text-xs text-blue-400 text-glow-electric">
-                AWAKENED S-RANK
+              <div id="playerTitleDisplay" class="font-launcher text-xs text-blue-400 text-glow-electric">
+                SHADOW MONARCH
               </div>
             </div>
             <div>
               <div class="text-[10px] font-launcher-sub text-slate-400">LEVEL</div>
-              <div id="playerLevelDisplay" class="font-launcher text-2xl text-system-blue">
+              <div id="playerLevelDisplay" class="font-launcher text-xl text-system-blue">
                 120
               </div>
             </div>
             <div>
-              <div class="text-[10px] font-launcher-sub text-slate-400">FATIGUE</div>
-              <div id="playerFatigueDisplay" class="font-launcher text-base text-emerald-400">
-                0
+              <div class="text-[10px] font-launcher-sub text-slate-400">RANK</div>
+              <div id="playerRankDisplay" class="font-launcher text-xl text-emerald-400 text-glow-green">
+                S-RANK
               </div>
             </div>
           </div>
 
-          <!-- HP & MP Gauges -->
-          <div class="space-y-3 mb-5">
-            <!-- HP Bar -->
+          <!-- DUAL-BAR HP SECTION (LIFE EXPECTANCY 60-YEAR TARGET) -->
+          <div class="space-y-4 bg-slate-950/70 p-4 border border-system-blue/30">
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="font-launcher text-xs text-rose-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-heart-pulse"></i>
+                HP (LIFE EXPECTANCY: 60 YEARS TARGET)
+              </span>
+              <span class="text-[10px] font-launcher-sub text-slate-400">DOB: 19 DEC 2002</span>
+            </div>
+
+            <!-- BAR 1: TIME LOST (GREEN) -->
+            <div>
+              <div class="flex justify-between text-xs font-launcher-sub mb-1">
+                <span class="text-emerald-400 flex items-center gap-1">
+                  <i class="fa-solid fa-clock-rotate-left text-[10px]"></i> TIME LOST
+                </span>
+                <div class="space-x-2">
+                  <span id="timeLostPercent" class="text-emerald-400 font-launcher">0.00%</span>
+                  <span id="timeLostText" class="text-slate-200 font-mono text-[11px]">0Y 00M 00D 00S</span>
+                </div>
+              </div>
+              <div class="w-full bg-slate-950 h-3.5 border border-emerald-900/80 p-0.5 overflow-hidden">
+                <div id="timeLostBar" class="bg-gradient-to-r from-emerald-600 to-green-400 h-full transition-all duration-300 shadow-sm shadow-emerald-500" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- BAR 2: TIME REMAINING (RED) -->
             <div>
               <div class="flex justify-between text-xs font-launcher-sub mb-1">
                 <span class="text-rose-400 flex items-center gap-1">
-                  <i class="fa-solid fa-heart text-[10px]"></i> HP
+                  <i class="fa-solid fa-hourglass-half text-[10px]"></i> TIME REMAINING
                 </span>
-                <span id="hpText" class="text-slate-200">15,400 / 15,400</span>
+                <div class="space-x-2">
+                  <span id="timeRemPercent" class="text-rose-400 font-launcher">100.00%</span>
+                  <span id="timeRemText" class="text-slate-200 font-mono text-[11px]">60Y 00M 00D 00S</span>
+                </div>
               </div>
-              <div class="w-full bg-slate-950 h-3 border border-rose-900/60 p-0.5 overflow-hidden">
-                <div id="hpBar" class="bg-gradient-to-r from-rose-600 to-red-400 h-full transition-all duration-500 shadow-sm shadow-rose-500" style="width: 100%;"></div>
+              <div class="w-full bg-slate-950 h-3.5 border border-rose-900/80 p-0.5 overflow-hidden">
+                <div id="timeRemBar" class="bg-gradient-to-r from-rose-700 via-red-500 to-pink-500 h-full transition-all duration-300 shadow-sm shadow-rose-500" style="width: 100%;"></div>
               </div>
             </div>
 
-            <!-- MP Bar -->
-            <div>
-              <div class="flex justify-between text-xs font-launcher-sub mb-1">
-                <span class="text-cyan-400 flex items-center gap-1">
-                  <i class="fa-solid fa-bolt text-[10px]"></i> MP
-                </span>
-                <span id="mpText" class="text-slate-200">9,800 / 9,800</span>
-              </div>
-              <div class="w-full bg-slate-950 h-3 border border-blue-900/60 p-0.5 overflow-hidden">
-                <div id="mpBar" class="bg-gradient-to-r from-blue-700 via-system-blue to-cyan-300 h-full transition-all duration-500 shadow-sm shadow-blue-500" style="width: 100%;"></div>
-              </div>
+          </div>
+
+        </div>
+
+
+        <!-- LIFE ASPECTS & RADAR CHART MODULE -->
+        <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue backdrop-blur-xl">
+          
+          <div class="flex items-center justify-between border-b border-system-blue/40 pb-3 mb-4">
+            <div class="flex items-center space-x-2">
+              <i class="fa-solid fa-chart-pie text-system-blue"></i>
+              <span class="font-launcher text-sm text-system-blue text-glow-blue">
+                LIFE ASPECTS
+              </span>
+            </div>
+            
+            <!-- EDIT & SAVE ACTION BUTTONS -->
+            <div class="flex items-center space-x-2">
+              <button 
+                id="btnEditAspects" 
+                onclick="promptAspectEdit()" 
+                class="px-2.5 py-1 bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500 hover:text-slate-950 text-amber-400 font-launcher-sub text-[11px] clip-system-btn transition-all flex items-center space-x-1"
+              >
+                <i class="fa-solid fa-lock text-[10px]" id="editLockIcon"></i>
+                <span id="editBtnText">EDIT</span>
+              </button>
+
+              <button 
+                id="btnSaveAspects" 
+                onclick="saveAspectChanges()" 
+                disabled 
+                class="hidden px-2.5 py-1 bg-emerald-500/20 border border-emerald-500/50 hover:bg-emerald-500 hover:text-slate-950 text-emerald-400 font-launcher-sub text-[11px] clip-system-btn transition-all flex items-center space-x-1 opacity-50 cursor-not-allowed"
+              >
+                <i class="fa-solid fa-floppy-disk text-[10px]"></i>
+                <span>SAVE</span>
+              </button>
             </div>
           </div>
 
-          <!-- STATS ALLOCATION SECTION -->
-          <div class="border-t border-system-blue/30 pt-4">
-            <div class="flex justify-between items-center mb-3">
-              <span class="font-launcher-sub text-xs text-slate-300">ABILITY STATS</span>
-              <div class="bg-blue-950/80 border border-blue-500/50 px-2.5 py-1 font-launcher text-xs">
-                AVAILABLE POINTS: <span id="statPointsDisplay" class="text-yellow-400 text-sm ml-1">5</span>
+          <!-- RADAR CHART CANVAS -->
+          <div class="w-full aspect-square max-h-[300px] mb-5 relative flex items-center justify-center bg-slate-950/60 border border-system-blue/20">
+            <canvas id="radarCanvas" class="w-full h-full"></canvas>
+          </div>
+
+          <!-- 11 ASPECTS SELECTORS LIST (COLOR CODED) -->
+          <div class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
+            
+            <!-- 01. Muslim -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">01. Muslim</span>
+              <select disabled onchange="updateAspect('muslim', this.value)" id="sel_muslim" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 02. Economic -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">02. Economic</span>
+              <select disabled onchange="updateAspect('economic', this.value)" id="sel_economic" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 03. Physical Health -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">03. Physical Health</span>
+              <select disabled onchange="updateAspect('physical', this.value)" id="sel_physical" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 04. Mental Health -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">04. Mental Health</span>
+              <select disabled onchange="updateAspect('mental', this.value)" id="sel_mental" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 05. Soft Skill -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">05. Soft Skill</span>
+              <select disabled onchange="updateAspect('soft_skill', this.value)" id="sel_soft_skill" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 06. Communication Skill -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">06. Communication Skill</span>
+              <select disabled onchange="updateAspect('comm_skill', this.value)" id="sel_comm_skill" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 07. Daily Life Skill -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">07. Daily Life Skill</span>
+              <select disabled onchange="updateAspect('daily_skill', this.value)" id="sel_daily_skill" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 08. Relationships Group -->
+            <div class="p-2 bg-slate-950/90 border border-blue-900/60 space-y-2">
+              <div class="font-launcher-sub text-xs text-blue-300 border-b border-blue-900/40 pb-1">
+                08. Relationships
+              </div>
+
+              <!-- 8.1 Family -->
+              <div class="flex items-center justify-between pl-3 text-xs">
+                <span class="font-launcher-sub text-slate-300">8.1 Family</span>
+                <select disabled onchange="updateRelationshipSub('rel_family', this.value)" id="sel_rel_family" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                  <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                  <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                  <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                  <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                  <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                  <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+                </select>
+              </div>
+
+              <!-- 8.2 Relatives -->
+              <div class="flex items-center justify-between pl-3 text-xs">
+                <span class="font-launcher-sub text-slate-300">8.2 Relatives</span>
+                <select disabled onchange="updateRelationshipSub('rel_relatives', this.value)" id="sel_rel_relatives" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                  <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                  <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                  <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                  <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                  <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                  <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+                </select>
+              </div>
+
+              <!-- 8.3 Friends -->
+              <div class="flex items-center justify-between pl-3 text-xs">
+                <span class="font-launcher-sub text-slate-300">8.3 Friends</span>
+                <select disabled onchange="updateRelationshipSub('rel_friends', this.value)" id="sel_rel_friends" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                  <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                  <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                  <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                  <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                  <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                  <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+                </select>
               </div>
             </div>
 
-            <!-- Stats List -->
-            <div class="space-y-2">
-              
-              <!-- STRENGTH -->
-              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
-                <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-hand-fist text-rose-400 w-4 text-center"></i>
-                  <span class="font-launcher-sub text-xs text-slate-300">STRENGTH</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span id="statStr" class="font-launcher text-sm text-system-blue">284</span>
-                  <button onclick="allocateStat('str')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- VITALITY -->
-              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
-                <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-shield-heart text-emerald-400 w-4 text-center"></i>
-                  <span class="font-launcher-sub text-xs text-slate-300">VITALITY</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span id="statVit" class="font-launcher text-sm text-system-blue">230</span>
-                  <button onclick="allocateStat('vit')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- AGILITY -->
-              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
-                <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-person-running text-amber-400 w-4 text-center"></i>
-                  <span class="font-launcher-sub text-xs text-slate-300">AGILITY</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span id="statAgi" class="font-launcher text-sm text-system-blue">265</span>
-                  <button onclick="allocateStat('agi')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- INTELLIGENCE -->
-              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
-                <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-brain text-blue-400 w-4 text-center"></i>
-                  <span class="font-launcher-sub text-xs text-slate-300">INTELLIGENCE</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span id="statInt" class="font-launcher text-sm text-system-blue">290</span>
-                  <button onclick="allocateStat('int')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <!-- SENSE -->
-              <div class="flex items-center justify-between p-2 bg-slate-950/60 border border-slate-800 hover:border-system-blue/40 transition-colors">
-                <div class="flex items-center space-x-2">
-                  <i class="fa-solid fa-eye text-cyan-400 w-4 text-center"></i>
-                  <span class="font-launcher-sub text-xs text-slate-300">SENSE</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span id="statSen" class="font-launcher text-sm text-system-blue">220</span>
-                  <button onclick="allocateStat('sen')" class="w-6 h-6 bg-system-blue/20 border border-system-blue text-system-blue hover:bg-system-blue hover:text-slate-950 font-launcher text-xs flex items-center justify-center transition-all active:scale-90">
-                    +
-                  </button>
-                </div>
-              </div>
-
+            <!-- 09. Social Works -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">09. Social Works</span>
+              <select disabled onchange="updateAspect('social_works', this.value)" id="sel_social_works" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
             </div>
 
-            <div class="mt-4">
-              <button onclick="resetStats()" class="w-full py-2 bg-slate-950 border border-slate-800 hover:border-system-blue text-xs font-launcher-sub text-slate-300 transition-all">
-                RESET STATS
-              </button>
+            <!-- 10. Projects -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">10. Projects</span>
+              <select disabled onchange="updateAspect('projects', this.value)" id="sel_projects" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
+            </div>
+
+            <!-- 11. Hobby & Leisure -->
+            <div class="flex items-center justify-between p-2 bg-slate-950/70 border border-slate-800 hover:border-system-blue/50">
+              <span class="font-launcher-sub text-xs text-slate-200">11. Hobby & Leisure</span>
+              <select disabled onchange="updateAspect('hobby_leisure', this.value)" id="sel_hobby_leisure" class="system-select-field px-2 py-1 text-xs font-launcher transition-all">
+                <option value="1" style="color:#00ff88; background:#030a16;">Rank E</option>
+                <option value="2" style="color:#00d2ff; background:#030a16;">Rank D</option>
+                <option value="3" style="color:#3b82f6; background:#030a16;">Rank C</option>
+                <option value="4" style="color:#a855f7; background:#030a16;">Rank B</option>
+                <option value="5" style="color:#f97316; background:#030a16;">Rank A</option>
+                <option value="6" style="color:#ff2a5f; background:#030a16;">Rank S</option>
+              </select>
             </div>
 
           </div>
@@ -447,7 +613,7 @@
       </section>
 
       <!-- RIGHT COLUMN: QUEST & SYSTEM MODULES -->
-      <section class="lg:col-span-7 flex flex-col space-y-6">
+      <section class="lg:col-span-6 flex flex-col space-y-6">
         
         <!-- DAILY QUEST WIDGET -->
         <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue backdrop-blur-xl relative">
@@ -498,7 +664,7 @@
                 <button onclick="incrementQuest('situps', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
                   +10 REPS
                 </button>
-                <button onclick="incrementQuest('situps', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
+                <button onclick="incrementQuest('situps', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-sub text-xs transition-all">
                   +50 REPS
                 </button>
               </div>
@@ -699,13 +865,179 @@
     </div>
   </div>
 
+  <!-- PASSWORD CONFIRMATION MODAL FOR ASPECT EDITING -->
+  <div id="aspectAuthModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-system-card border-2 border-amber-500 clip-system-box p-6 max-w-sm w-full glow-blue relative">
+      <div class="flex items-center space-x-2 border-b border-amber-500/40 pb-3 mb-4">
+        <i class="fa-solid fa-shield-halved text-amber-400 text-lg"></i>
+        <h3 class="font-launcher text-sm text-amber-400 text-glow-blue">
+          SECURITY VERIFICATION
+        </h3>
+      </div>
+      <p class="text-xs text-slate-300 font-launcher-sub mb-4 leading-relaxed">
+        ENTER YOUR PASSWORD TO UNLOCK EDIT ACCESS FOR LIFE ASPECTS:
+      </p>
+      <form onsubmit="handleAspectAuth(event)" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            id="aspectAuthPassword" 
+            required 
+            placeholder="Enter Password" 
+            autocomplete="off"
+            class="w-full px-3 py-2.5 system-input-field text-sm font-semibold font-launcher-sub"
+          >
+        </div>
+        
+        <div id="aspectAuthError" class="hidden bg-system-red/20 border border-system-red p-2 text-system-red text-[11px] font-launcher-sub">
+          <i class="fa-solid fa-triangle-exclamation"></i> INCORRECT PASSWORD. ACCESS DENIED.
+        </div>
+
+        <div class="flex items-center space-x-2 pt-2">
+          <button 
+            type="button" 
+            onclick="closeAspectAuthModal()" 
+            class="flex-1 py-2 bg-slate-900 border border-slate-700 text-slate-400 font-launcher text-xs clip-system-btn hover:bg-slate-800 transition-all"
+          >
+            CANCEL
+          </button>
+          <button 
+            type="submit" 
+            class="flex-1 py-2 bg-gradient-to-r from-amber-600 to-yellow-400 text-slate-950 font-launcher text-xs clip-system-btn hover:from-amber-500 hover:to-yellow-300 transition-all"
+          >
+            UNLOCK
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ========================================================================= -->
   <!-- JAVASCRIPT LOGIC ENGINE -->
   <!-- ========================================================================= -->
   <script>
     /* -------------------------------------------------------------------------
-     * 1. AUTOMATIC AUDIO SYNTHESIZER (Triggers sound on EVERY button interaction)
+     * ASPECT COLOR MAP & STATE LOCK CONTROL
+     * ------------------------------------------------------------------------- */
+    let isAspectEditing = false;
+
+    const RANK_COLORS = {
+      1: { color: '#00ff88', border: 'rgba(0, 255, 136, 0.7)', shadow: '0 0 8px rgba(0, 255, 136, 0.5)' }, // E
+      2: { color: '#00d2ff', border: 'rgba(0, 210, 255, 0.7)', shadow: '0 0 8px rgba(0, 210, 255, 0.5)' }, // D
+      3: { color: '#3b82f6', border: 'rgba(59, 130, 246, 0.7)', shadow: '0 0 8px rgba(59, 130, 246, 0.5)' }, // C
+      4: { color: '#a855f7', border: 'rgba(168, 85, 247, 0.7)', shadow: '0 0 8px rgba(168, 85, 247, 0.5)' }, // B
+      5: { color: '#f97316', border: 'rgba(249, 115, 22, 0.7)', shadow: '0 0 8px rgba(249, 115, 22, 0.5)' }, // A
+      6: { color: '#ff2a5f', border: 'rgba(255, 42, 95, 0.7)', shadow: '0 0 8px rgba(255, 42, 95, 0.5)' }  // S
+    };
+
+    function styleAspectSelect(selectElem) {
+      if (!selectElem) return;
+      const val = parseInt(selectElem.value) || 1;
+      const rankInfo = RANK_COLORS[val] || RANK_COLORS[1];
+      selectElem.style.color = rankInfo.color;
+      selectElem.style.borderColor = rankInfo.border;
+      selectElem.style.boxShadow = rankInfo.shadow;
+    }
+
+    /* -------------------------------------------------------------------------
+     * ASPECT EDIT AUTHENTICATION & SAVE ENGINE
+     * ------------------------------------------------------------------------- */
+    function promptAspectEdit() {
+      if (isAspectEditing) {
+        // Toggle Lock manually
+        lockAspectEditing();
+        return;
+      }
+      document.getElementById('aspectAuthPassword').value = '';
+      document.getElementById('aspectAuthError').classList.add('hidden');
+      document.getElementById('aspectAuthModal').classList.remove('hidden');
+    }
+
+    function closeAspectAuthModal() {
+      document.getElementById('aspectAuthModal').classList.add('hidden');
+    }
+
+    function handleAspectAuth(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('aspectAuthPassword').value.trim();
+      if (pwd === 'kaikobad') {
+        playAccessGrantedSound();
+        closeAspectAuthModal();
+        unlockAspectEditing();
+      } else {
+        playAccessDeniedSound();
+        document.getElementById('aspectAuthError').classList.remove('hidden');
+      }
+    }
+
+    function unlockAspectEditing() {
+      isAspectEditing = true;
+      
+      const btnEdit = document.getElementById('btnEditAspects');
+      const btnSave = document.getElementById('btnSaveAspects');
+      const lockIcon = document.getElementById('editLockIcon');
+      const btnText = document.getElementById('editBtnText');
+
+      if (lockIcon) lockIcon.className = 'fa-solid fa-lock-open text-[10px]';
+      if (btnText) btnText.innerText = 'UNLOCKED';
+      
+      if (btnEdit) {
+        btnEdit.className = 'px-2.5 py-1 bg-cyan-500/20 border border-cyan-500/60 text-cyan-300 font-launcher-sub text-[11px] clip-system-btn transition-all flex items-center space-x-1 glow-blue';
+      }
+
+      if (btnSave) {
+        btnSave.disabled = false;
+        btnSave.classList.remove('hidden', 'opacity-50', 'cursor-not-allowed');
+        btnSave.classList.add('cursor-pointer', 'glow-green');
+      }
+
+      syncAspectSelects();
+
+      showSystemModal(
+        'EDIT MODE UNLOCKED',
+        'AUTHORIZATION VERIFIED. YOU CAN NOW MODIFY ASPECT RANKS. CLICK SAVE TO COMMIT CHANGES.'
+      );
+    }
+
+    function lockAspectEditing() {
+      isAspectEditing = false;
+      
+      const btnEdit = document.getElementById('btnEditAspects');
+      const btnSave = document.getElementById('btnSaveAspects');
+      const lockIcon = document.getElementById('editLockIcon');
+      const btnText = document.getElementById('editBtnText');
+
+      if (lockIcon) lockIcon.className = 'fa-solid fa-lock text-[10px]';
+      if (btnText) btnText.innerText = 'EDIT';
+
+      if (btnEdit) {
+        btnEdit.className = 'px-2.5 py-1 bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500 hover:text-slate-950 text-amber-400 font-launcher-sub text-[11px] clip-system-btn transition-all flex items-center space-x-1';
+      }
+
+      if (btnSave) {
+        btnSave.disabled = true;
+        btnSave.classList.add('hidden', 'opacity-50', 'cursor-not-allowed');
+      }
+
+      syncAspectSelects();
+    }
+
+    function saveAspectChanges() {
+      saveAspectScores();
+      recalcPlayerStats();
+      renderDashboard();
+      lockAspectEditing();
+
+      playAccessGrantedSound();
+
+      showSystemModal(
+        'LIFE ASPECTS SAVED',
+        'ALL ASPECT SCORE MODIFICATIONS HAVE BEEN COMMITTED TO SYSTEM MEMORY AND LOCKED.'
+      );
+    }
+
+    /* -------------------------------------------------------------------------
+     * 1. AUTOMATIC AUDIO SYNTHESIZER
      * ------------------------------------------------------------------------- */
     let audioCtx = null;
 
@@ -737,9 +1069,9 @@
       } catch (e) {}
     }
 
-    // Attach sound automatically to every button click or touch in the site
+    // Attach sound automatically to every button, select or input click in the site
     document.addEventListener('click', (e) => {
-      const targetBtn = e.target.closest('button') || e.target.closest('input[type="submit"]');
+      const targetBtn = e.target.closest('button') || e.target.closest('input[type="submit"]') || e.target.closest('select');
       if (targetBtn) {
         playTechBeep(1250, 0.05);
       }
@@ -779,23 +1111,351 @@
 
 
     /* -------------------------------------------------------------------------
-     * 3. LOCALSTORAGE & SYSTEM DATA STATE
+     * 3. DUAL HP BARS (LIFE EXPECTANCY BASED ON DOB: 19 DEC 2002, 60 YEARS TARGET)
+     * ------------------------------------------------------------------------- */
+    function updateLifeBars() {
+      // Date of Birth: 19 Dec 2002 00:00:00
+      const dob = new Date(2002, 11, 19, 0, 0, 0); 
+      // 60-Year Target Date: 19 Dec 2062 00:00:00
+      const target = new Date(2062, 11, 19, 0, 0, 0); 
+      const now = new Date();
+
+      const totalLifespanMs = target.getTime() - dob.getTime();
+      const elapsedMs = Math.max(0, now.getTime() - dob.getTime());
+      const remainingMs = Math.max(0, target.getTime() - now.getTime());
+
+      const elapsedPercent = Math.min(100, Math.max(0, (elapsedMs / totalLifespanMs) * 100)).toFixed(2);
+      const remainingPercent = Math.min(100, Math.max(0, (remainingMs / totalLifespanMs) * 100)).toFixed(2);
+
+      const lost = getTimeBreakdown(dob, now);
+      const rem = getTimeBreakdown(now, target);
+
+      // Bar 1: Time Lost (Green)
+      const lostBar = document.getElementById('timeLostBar');
+      const lostText = document.getElementById('timeLostText');
+      const lostPercent = document.getElementById('timeLostPercent');
+
+      if (lostBar) lostBar.style.width = `${elapsedPercent}%`;
+      if (lostPercent) lostPercent.innerText = `${elapsedPercent}%`;
+      if (lostText) lostText.innerText = `${lost.years}Y ${String(lost.months).padStart(2,'0')}M ${String(lost.days).padStart(2,'0')}D ${String(lost.seconds).padStart(2,'0')}S`;
+
+      // Bar 2: Time Remaining (Red)
+      const remBar = document.getElementById('timeRemBar');
+      const remText = document.getElementById('timeRemText');
+      const remPercent = document.getElementById('timeRemPercent');
+
+      if (remBar) remBar.style.width = `${remainingPercent}%`;
+      if (remPercent) remPercent.innerText = `${remainingPercent}%`;
+      if (remText) remText.innerText = `${rem.years}Y ${String(rem.months).padStart(2,'0')}M ${String(rem.days).padStart(2,'0')}D ${String(rem.seconds).padStart(2,'0')}S`;
+    }
+
+    function getTimeBreakdown(d1, d2) {
+      if (d1 > d2) return { years: 0, months: 0, days: 0, seconds: 0 };
+
+      let years = d2.getFullYear() - d1.getFullYear();
+      let months = d2.getMonth() - d1.getMonth();
+      let days = d2.getDate() - d1.getDate();
+      let hours = d2.getHours() - d1.getHours();
+      let minutes = d2.getMinutes() - d1.getMinutes();
+      let seconds = d2.getSeconds() - d1.getSeconds();
+
+      if (seconds < 0) { seconds += 60; minutes--; }
+      if (minutes < 0) { minutes += 60; hours--; }
+      if (hours < 0) { hours += 24; days--; }
+      if (days < 0) {
+        const prevMonthDays = new Date(d2.getFullYear(), d2.getMonth(), 0).getDate();
+        days += prevMonthDays;
+        months--;
+      }
+      if (months < 0) { months += 12; years--; }
+
+      return { years, months, days, seconds };
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 4. 11 LIFE ASPECTS & RADAR CHART ENGINE (DYNAMIC TITLE, LEVEL & RANK)
+     * ------------------------------------------------------------------------- */
+    const DEFAULT_ASPECTS = {
+      muslim: 5,        // A Rank
+      economic: 4,      // B Rank
+      physical: 5,      // A Rank
+      mental: 4,        // B Rank
+      soft_skill: 4,    // B Rank
+      comm_skill: 5,    // A Rank
+      daily_skill: 4,   // B Rank
+      rel_family: 6,    // 8.1 Family (S)
+      rel_relatives: 4, // 8.2 Relatives (B)
+      rel_friends: 5,   // 8.3 Friends (A)
+      relationships: 5, // Calculated avg of 8.1, 8.2, 8.3
+      social_works: 4,  // B Rank
+      projects: 5,      // A Rank
+      hobby_leisure: 4  // B Rank
+    };
+
+    let aspectScores = JSON.parse(JSON.stringify(DEFAULT_ASPECTS));
+
+    function loadAspectScores() {
+      const saved = localStorage.getItem('sl_aspect_scores');
+      if (saved) {
+        try {
+          aspectScores = JSON.parse(saved);
+        } catch (e) {
+          aspectScores = JSON.parse(JSON.stringify(DEFAULT_ASPECTS));
+        }
+      }
+      recalcRelationshipsAvg();
+      syncAspectSelects();
+      recalcPlayerStats();
+    }
+
+    function saveAspectScores() {
+      localStorage.setItem('sl_aspect_scores', JSON.stringify(aspectScores));
+    }
+
+    function recalcRelationshipsAvg() {
+      const f = parseInt(aspectScores.rel_family) || 1;
+      const r = parseInt(aspectScores.rel_relatives) || 1;
+      const fr = parseInt(aspectScores.rel_friends) || 1;
+      aspectScores.relationships = parseFloat(((f + r + fr) / 3).toFixed(2));
+    }
+
+    function syncAspectSelects() {
+      const keys = ['muslim', 'economic', 'physical', 'mental', 'soft_skill', 'comm_skill', 'daily_skill', 'rel_family', 'rel_relatives', 'rel_friends', 'social_works', 'projects', 'hobby_leisure'];
+      keys.forEach(k => {
+        const sel = document.getElementById(`sel_${k}`);
+        if (sel && aspectScores[k] !== undefined) {
+          sel.value = Math.round(aspectScores[k]);
+          styleAspectSelect(sel);
+          sel.disabled = !isAspectEditing;
+        }
+      });
+    }
+
+    function updateAspect(key, val) {
+      aspectScores[key] = parseInt(val);
+      const sel = document.getElementById(`sel_${key}`);
+      styleAspectSelect(sel);
+      recalcRelationshipsAvg();
+      recalcPlayerStats();
+      renderDashboard();
+    }
+
+    function updateRelationshipSub(subKey, val) {
+      aspectScores[subKey] = parseInt(val);
+      const sel = document.getElementById(`sel_${subKey}`);
+      styleAspectSelect(sel);
+      recalcRelationshipsAvg();
+      recalcPlayerStats();
+      renderDashboard();
+    }
+
+    /* -------------------------------------------------------------------------
+     * DYNAMIC PLAYER STATS ENGINE (LEVEL MAX 100, RANK & TITLE)
+     * ------------------------------------------------------------------------- */
+    function recalcPlayerStats() {
+      // Compute average score across all 11 Life Aspects
+      const aspectsList = [
+        aspectScores.muslim,
+        aspectScores.economic,
+        aspectScores.physical,
+        aspectScores.mental,
+        aspectScores.soft_skill,
+        aspectScores.comm_skill,
+        aspectScores.daily_skill,
+        aspectScores.relationships, // average of family, relatives, friends
+        aspectScores.social_works,
+        aspectScores.projects,
+        aspectScores.hobby_leisure
+      ];
+
+      const sum = aspectsList.reduce((acc, val) => acc + (parseFloat(val) || 1), 0);
+      const avg = sum / aspectsList.length; // Scale: 1.0 to 6.0
+
+      // Compute Level (Bounded between 1 and 100)
+      let calculatedLevel = Math.round(((avg - 1) / 5) * 99 + 1) + (systemData.bonusLevel || 0);
+      systemData.level = Math.min(100, Math.max(1, calculatedLevel));
+
+      // Compute Dynamic Rank, Title & Color Theme
+      if (avg >= 5.16) {
+        systemData.rank = "S-RANK";
+        systemData.title = "SHADOW MONARCH";
+        systemData.rankColor = "#ff2a5f";
+        systemData.rankGlow = "0 0 14px rgba(255, 42, 95, 0.85)";
+      } else if (avg >= 4.33) {
+        systemData.rank = "A-RANK";
+        systemData.title = "HIGH HUMAN";
+        systemData.rankColor = "#f97316";
+        systemData.rankGlow = "0 0 12px rgba(249, 115, 22, 0.85)";
+      } else if (avg >= 3.50) {
+        systemData.rank = "B-RANK";
+        systemData.title = "ELITE HUNTER";
+        systemData.rankColor = "#a855f7";
+        systemData.rankGlow = "0 0 12px rgba(168, 85, 247, 0.85)";
+      } else if (avg >= 2.66) {
+        systemData.rank = "C-RANK";
+        systemData.title = "STRIKER HUNTER";
+        systemData.rankColor = "#3b82f6";
+        systemData.rankGlow = "0 0 12px rgba(59, 130, 246, 0.85)";
+      } else if (avg >= 1.83) {
+        systemData.rank = "D-RANK";
+        systemData.title = "RECRUIT HUNTER";
+        systemData.rankColor = "#00d2ff";
+        systemData.rankGlow = "0 0 12px rgba(0, 210, 255, 0.85)";
+      } else {
+        systemData.rank = "E-RANK";
+        systemData.title = "THE WEAKEST HUNTER";
+        systemData.rankColor = "#00ff88";
+        systemData.rankGlow = "0 0 12px rgba(0, 255, 136, 0.85)";
+      }
+
+      saveSystemData();
+    }
+
+    function drawRadarChart() {
+      const radarCanvas = document.getElementById('radarCanvas');
+      if (!radarCanvas) return;
+      const ctx = radarCanvas.getContext('2d');
+
+      const container = radarCanvas.parentElement;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      
+      // Guard against zero-sized container when dashboard is hidden/initializing
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      
+      radarCanvas.width = rect.width * dpr;
+      radarCanvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const width = rect.width;
+      const height = rect.height;
+      const cx = width / 2;
+      const cy = height / 2;
+      
+      // Ensure radius never falls below a positive minimum
+      const radius = Math.max(10, Math.min(width, height) / 2 - 42);
+
+      ctx.clearRect(0, 0, width, height);
+
+      const aspectKeys = [
+        { label: '01. Muslim', val: aspectScores.muslim },
+        { label: '02. Economic', val: aspectScores.economic },
+        { label: '03. Physical', val: aspectScores.physical },
+        { label: '04. Mental', val: aspectScores.mental },
+        { label: '05. Soft Skill', val: aspectScores.soft_skill },
+        { label: '06. Comm Skill', val: aspectScores.comm_skill },
+        { label: '07. Daily Skill', val: aspectScores.daily_skill },
+        { label: '08. Relations', val: aspectScores.relationships },
+        { label: '09. Social Works', val: aspectScores.social_works },
+        { label: '10. Projects', val: aspectScores.projects },
+        { label: '11. Hobby/Leisure', val: aspectScores.hobby_leisure }
+      ];
+
+      const numAxes = aspectKeys.length; // 11 Axes
+      const ranks = ['E', 'D', 'C', 'B', 'A', 'S'];
+
+      // 1. Draw Concentric 11-Polygon Grid Lines (Levels 1 to 6)
+      for (let level = 1; level <= 6; level++) {
+        const r = (radius / 6) * level;
+        ctx.beginPath();
+        for (let i = 0; i < numAxes; i++) {
+          const angle = (Math.PI * 2 / numAxes) * i - Math.PI / 2;
+          const x = cx + r * Math.cos(angle);
+          const y = cy + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = level === 6 ? 'rgba(0, 210, 255, 0.45)' : 'rgba(0, 210, 255, 0.12)';
+        ctx.lineWidth = level === 6 ? 1.5 : 1;
+        ctx.stroke();
+
+        // Level Rank Labels on North Axis
+        ctx.fillStyle = 'rgba(0, 210, 255, 0.6)';
+        ctx.font = '9px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(ranks[level - 1], cx, cy - r + 3);
+      }
+
+      // 2. Radial Axis Spoke Lines & Axis Labels
+      for (let i = 0; i < numAxes; i++) {
+        const angle = (Math.PI * 2 / numAxes) * i - Math.PI / 2;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = 'rgba(0, 210, 255, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Label Position
+        const labelR = radius + 22;
+        const lx = cx + labelR * Math.cos(angle);
+        const ly = cy + labelR * Math.sin(angle);
+
+        ctx.fillStyle = '#00d2ff';
+        ctx.font = 'bold 9px Inter, sans-serif';
+        ctx.textAlign = Math.abs(angle + Math.PI/2) < 0.1 ? 'center' : (lx > cx ? 'left' : 'right');
+        ctx.textBaseline = 'middle';
+        ctx.fillText(aspectKeys[i].label, lx, ly);
+      }
+
+      // 3. Draw Data Polygon
+      ctx.beginPath();
+      const dataPoints = [];
+      for (let i = 0; i < numAxes; i++) {
+        const val = aspectKeys[i].val || 1;
+        const r = (radius / 6) * val;
+        const angle = (Math.PI * 2 / numAxes) * i - Math.PI / 2;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        dataPoints.push({ x, y });
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+
+      // Translucent Blue Gradient Fill (Safely bounded radius)
+      const r0 = Math.min(5, radius * 0.1);
+      const fillGrad = ctx.createRadialGradient(cx, cy, r0, cx, cy, radius);
+      fillGrad.addColorStop(0, 'rgba(0, 210, 255, 0.45)');
+      fillGrad.addColorStop(1, 'rgba(59, 130, 246, 0.25)');
+      ctx.fillStyle = fillGrad;
+      ctx.fill();
+
+      // Glowing Neon Cyan Stroke Line
+      ctx.strokeStyle = '#00d2ff';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Data Vertex Glow Dots
+      dataPoints.forEach(pt => {
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.strokeStyle = '#00d2ff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+    }
+
+
+    /* -------------------------------------------------------------------------
+     * 5. SYSTEM DATA & LOCALSTORAGE STATE
      * ------------------------------------------------------------------------- */
     const DEFAULT_SYSTEM_DATA = {
-      level: 120,
-      fatigue: 0,
-      hpCurrent: 15400,
-      hpMax: 15400,
-      mpCurrent: 9800,
-      mpMax: 9800,
-      availablePoints: 5,
-      stats: {
-        str: 284,
-        vit: 230,
-        agi: 265,
-        int: 290,
-        sen: 220
-      },
+      level: 1,
+      bonusLevel: 0,
+      title: "THE WEAKEST HUNTER",
+      rank: "E-RANK",
+      rankColor: "#00ff88",
+      rankGlow: "0 0 10px rgba(0, 255, 136, 0.7)",
       quest: {
         pushups: 0,
         situps: 0,
@@ -824,7 +1484,7 @@
 
 
     /* -------------------------------------------------------------------------
-     * 4. AUTHENTICATION (User enters credentials: kaikobad / kaikobad)
+     * 6. AUTHENTICATION (User enters credentials: kaikobad / kaikobad)
      * ------------------------------------------------------------------------- */
     function checkAuthStatus() {
       const isAuthenticated = localStorage.getItem('sl_system_auth') === 'true';
@@ -839,11 +1499,17 @@
         dashboardView.classList.remove('hidden');
         if (playerNameDisplay) playerNameDisplay.innerText = currentUser.toUpperCase();
         loadSystemData();
+        loadAspectScores();
         renderDashboard();
+        
+        // Trigger radar draw frame after dashboard display state updates
+        requestAnimationFrame(() => {
+          drawRadarChart();
+        });
       } else {
         authView.classList.remove('hidden');
         dashboardView.classList.add('hidden');
-        // Clear input values when returning to login
+        // Clear input values when returning to login screen
         document.getElementById('loginUsername').value = '';
         document.getElementById('loginPassword').value = '';
       }
@@ -887,51 +1553,26 @@
 
 
     /* -------------------------------------------------------------------------
-     * 5. DASHBOARD & STAT ALLOCATION
+     * 7. DASHBOARD & QUEST ENGINE
      * ------------------------------------------------------------------------- */
     function renderDashboard() {
-      document.getElementById('playerLevelDisplay').innerText = systemData.level;
-      document.getElementById('playerFatigueDisplay').innerText = systemData.fatigue;
-      document.getElementById('statPointsDisplay').innerText = systemData.availablePoints;
-      
-      document.getElementById('statStr').innerText = systemData.stats.str;
-      document.getElementById('statVit').innerText = systemData.stats.vit;
-      document.getElementById('statAgi').innerText = systemData.stats.agi;
-      document.getElementById('statInt').innerText = systemData.stats.int;
-      document.getElementById('statSen').innerText = systemData.stats.sen;
+      // Dynamic Player status (Level, Title, Rank) update with Rank color coding
+      const lvlElem = document.getElementById('playerLevelDisplay');
+      const titleElem = document.getElementById('playerTitleDisplay');
+      const rankElem = document.getElementById('playerRankDisplay');
 
-      document.getElementById('hpText').innerText = `${systemData.hpCurrent.toLocaleString()} / ${systemData.hpMax.toLocaleString()}`;
-      document.getElementById('mpText').innerText = `${systemData.mpCurrent.toLocaleString()} / ${systemData.mpMax.toLocaleString()}`;
+      if (lvlElem) lvlElem.innerText = systemData.level;
+      if (titleElem) titleElem.innerText = systemData.title;
+      if (rankElem) {
+        rankElem.innerText = systemData.rank;
+        rankElem.style.color = systemData.rankColor || '#00ff88';
+        rankElem.style.textShadow = systemData.rankGlow || '0 0 10px #00ff88';
+      }
 
       renderQuest();
+      drawRadarChart();
     }
 
-    function allocateStat(statKey) {
-      if (systemData.availablePoints > 0) {
-        systemData.stats[statKey] += 1;
-        systemData.availablePoints -= 1;
-
-        if (statKey === 'vit') systemData.hpMax += 100;
-        if (statKey === 'int') systemData.mpMax += 80;
-
-        saveSystemData();
-        renderDashboard();
-      } else {
-        playAccessDeniedSound();
-        showSystemModal('STAT ALLOCATION NOTICE', 'NO AVAILABLE STAT POINTS REMAINING. COMPLETE DAILY QUESTS TO EARN MORE.');
-      }
-    }
-
-    function resetStats() {
-      systemData = JSON.parse(JSON.stringify(DEFAULT_SYSTEM_DATA));
-      saveSystemData();
-      renderDashboard();
-    }
-
-
-    /* -------------------------------------------------------------------------
-     * 6. DAILY QUEST TRACKER LOGIC
-     * ------------------------------------------------------------------------- */
     function renderQuest() {
       const q = systemData.quest;
       document.getElementById('cntPushups').innerText = `${q.pushups} / 100`;
@@ -989,18 +1630,14 @@
       if (systemData.quest.claimed) return;
 
       systemData.quest.claimed = true;
-      systemData.availablePoints += 5;
-      systemData.level += 1;
-      systemData.hpCurrent = systemData.hpMax;
-      systemData.mpCurrent = systemData.mpMax;
-      systemData.fatigue = 0;
+      systemData.bonusLevel = (systemData.bonusLevel || 0) + 1;
 
-      saveSystemData();
+      recalcPlayerStats();
       renderDashboard();
 
       showSystemModal(
         'QUEST REWARDS OBTAINED',
-        'FULL HP/MP RECOVERY\n+5 STAT POINTS ALLOCATED\nLEVEL INCREASED TO ' + systemData.level
+        'FULL RECOVERY EFFECT APPLIED.\nLEVEL INCREASED TO ' + systemData.level
       );
     }
 
@@ -1014,7 +1651,7 @@
 
 
     /* -------------------------------------------------------------------------
-     * 7. MODAL HANDLER
+     * 8. MODAL HANDLER
      * ------------------------------------------------------------------------- */
     function showSystemModal(title, msg) {
       const modal = document.getElementById('systemModal');
@@ -1029,7 +1666,7 @@
 
 
     /* -------------------------------------------------------------------------
-     * 8. CANVAS DARK BLUE MANA PARTICLES & CYBER GRID
+     * 9. CANVAS DARK BLUE MANA PARTICLES & CYBER GRID
      * ------------------------------------------------------------------------- */
     const canvas = document.getElementById('manaCanvas');
     const ctx = canvas.getContext('2d');
@@ -1040,6 +1677,7 @@
     function resizeCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
+      drawRadarChart();
     }
 
     class Particle {
@@ -1054,7 +1692,6 @@
         this.vx = (Math.random() - 0.5) * 0.4;
         this.vy = -Math.random() * 0.8 - 0.2;
         this.alpha = Math.random() * 0.65 + 0.2;
-        // Dark Blue Palette
         const blueShades = ['#00d2ff', '#3b82f6', '#60a5fa', '#1d4ed8'];
         this.color = blueShades[Math.floor(Math.random() * blueShades.length)];
       }
@@ -1106,7 +1743,6 @@
     function animateCanvas() {
       ctx.clearRect(0, 0, width, height);
 
-      // Deep Dark Blue Cyber Grid Lines
       ctx.strokeStyle = 'rgba(0, 210, 255, 0.035)';
       ctx.lineWidth = 1;
       const gridSize = 60;
@@ -1135,7 +1771,7 @@
 
 
     /* -------------------------------------------------------------------------
-     * 9. INITIALIZATION
+     * 10. INITIALIZATION
      * ------------------------------------------------------------------------- */
     window.addEventListener('resize', resizeCanvas);
 
@@ -1146,6 +1782,10 @@
       // Start 12-hour AM/PM real-time clock
       updateClock();
       setInterval(updateClock, 1000);
+
+      // Start live continuous 60-Year Life Expectancy dual HP bars (1-second update)
+      updateLifeBars();
+      setInterval(updateLifeBars, 1000);
 
       // Check LocalStorage Auth State
       checkAuthStatus();
