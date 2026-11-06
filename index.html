@@ -8,10 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Font: Inter (Standard Clean Sans-Serif) -->
+  <!-- Google Font: Inter (Standard Clean Sans-Serif) & Hind Siliguri / Kalpurush fallback -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -207,6 +207,11 @@
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+
+    /* Kalpurush / Bengali Font Class */
+    .font-kalpurush {
+      font-family: 'Kalpurush', 'Hind Siliguri', 'Inter', sans-serif;
     }
   </style>
 </head>
@@ -666,233 +671,320 @@
       <!-- RIGHT COLUMN: QUEST & SYSTEM MODULES -->
       <section class="lg:col-span-6 flex flex-col space-y-6">
         
-        <!-- DAILY QUEST WIDGET -->
-        <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-5 md:p-6 glow-blue backdrop-blur-xl relative">
+        <!-- SYSTEM CALENDAR MODULE (MONTHLY UP TO 2030) -->
+        <div class="bg-system-card border-2 border-system-blue/70 clip-system-box p-4 md:p-5 glow-blue backdrop-blur-xl relative">
           
-          <!-- Quest Header -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-system-blue/40 pb-3 mb-4 gap-2">
+          <!-- Calendar Header & Controls -->
+          <div class="flex items-center justify-between border-b border-system-blue/40 pb-3 mb-4">
             <div class="flex items-center space-x-2">
-              <i class="fa-solid fa-scroll text-yellow-400"></i>
-              <span class="font-launcher text-xs md:text-sm text-yellow-400 text-glow-blue">
-                DAILY QUEST: PREPARATION TO BECOME STRONG
+              <i class="fa-solid fa-calendar-days text-system-blue text-base"></i>
+              <span class="font-launcher text-xs md:text-sm text-system-blue text-glow-blue">
+                SYSTEM CALENDAR
               </span>
             </div>
-            <span id="questStatusTag" class="text-[10px] font-launcher-sub bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 px-2 py-0.5">
-              IN PROGRESS
-            </span>
-          </div>
-
-          <p class="text-xs text-slate-300 mb-4 font-launcher-sub">
-            WARNING: FAILURE TO COMPLETE THE DAILY QUEST WILL TRIGGER PENALTY SYSTEM.
-          </p>
-
-          <!-- Quest Exercises List -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
             
-            <!-- Push-ups -->
-            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-launcher-sub text-xs text-slate-200">PUSH-UPS</span>
-                <span id="cntPushups" class="font-launcher text-xs text-system-blue">0 / 100</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button onclick="incrementQuest('pushups', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +10 REPS
-                </button>
-                <button onclick="incrementQuest('pushups', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +50 REPS
-                </button>
-              </div>
-            </div>
-
-            <!-- Sit-ups -->
-            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-launcher-sub text-xs text-slate-200">SIT-UPS</span>
-                <span id="cntSitups" class="font-launcher text-xs text-system-blue">0 / 100</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button onclick="incrementQuest('situps', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +10 REPS
-                </button>
-                <button onclick="incrementQuest('situps', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-sub text-xs transition-all">
-                  +50 REPS
-                </button>
-              </div>
-            </div>
-
-            <!-- Squats -->
-            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-launcher-sub text-xs text-slate-200">SQUATS</span>
-                <span id="cntSquats" class="font-launcher text-xs text-system-blue">0 / 100</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button onclick="incrementQuest('squats', 10)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +10 REPS
-                </button>
-                <button onclick="incrementQuest('squats', 50)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +50 REPS
-                </button>
-              </div>
-            </div>
-
-            <!-- 10km Run -->
-            <div class="bg-slate-950/80 border border-slate-800 p-3 flex flex-col justify-between hover:border-system-blue/50 transition-colors">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-launcher-sub text-xs text-slate-200">10KM RUN</span>
-                <span id="cntRun" class="font-launcher text-xs text-system-blue">0 / 10 KM</span>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button onclick="incrementQuest('run', 2)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +2 KM
-                </button>
-                <button onclick="incrementQuest('run', 5)" class="flex-1 py-1 bg-system-blue/15 border border-system-blue/40 hover:bg-system-blue hover:text-slate-950 text-system-blue font-launcher-sub text-xs transition-all">
-                  +5 KM
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Total Quest Progress Bar -->
-          <div class="mb-4">
-            <div class="flex justify-between text-xs font-launcher-sub mb-1">
-              <span class="text-slate-300">TOTAL QUEST COMPLETION</span>
-              <span id="questPercent" class="text-yellow-400 font-launcher">0%</span>
-            </div>
-            <div class="w-full bg-slate-950 h-3 border border-yellow-600/40 p-0.5 overflow-hidden">
-              <div id="questProgressBar" class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-300 h-full transition-all duration-300 shadow-sm shadow-yellow-500" style="width: 0%;"></div>
+            <div class="flex items-center space-x-2">
+              <button onclick="changeCalMonth(-1)" class="px-2 py-1 bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 font-launcher text-xs clip-system-btn transition-all">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              
+              <span id="calMonthYearDisplay" class="font-launcher text-xs text-white px-2">
+                NOV 2026
+              </span>
+              
+              <button onclick="changeCalMonth(1)" class="px-2 py-1 bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 font-launcher text-xs clip-system-btn transition-all">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
             </div>
           </div>
 
-          <!-- Claim Reward Button -->
-          <button 
-            id="claimRewardBtn"
-            disabled
-            onclick="claimQuestRewards()"
-            class="w-full py-3 bg-slate-900 opacity-50 border border-slate-800 text-slate-500 font-launcher text-xs clip-system-btn transition-all duration-300 flex items-center justify-center space-x-2 cursor-not-allowed"
-          >
-            <i class="fa-solid fa-gift"></i>
-            <span>CLAIM QUEST REWARDS</span>
-          </button>
+          <!-- Calendar Grid -->
+          <div class="grid grid-cols-7 gap-1 text-center font-launcher-sub text-[10px] text-blue-300 mb-2">
+            <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+          </div>
+          <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs font-mono">
+            <!-- Rendered by JS -->
+          </div>
 
         </div>
 
-        <!-- ACTIVE SKILLS & SHADOW ARMY MODULE -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          
-          <!-- SKILLS WINDOW -->
-          <div class="bg-system-card border border-blue-500/50 clip-system-box p-4 glow-electric backdrop-blur-xl">
-            <div class="flex items-center justify-between border-b border-blue-500/30 pb-2 mb-3">
-              <span class="font-launcher text-xs text-blue-400">
-                ACTIVE SKILLS
+        <!-- SELECTED DATE & DASHBOARD TABS NAVBAR -->
+        <div class="bg-system-card border border-system-blue/50 clip-system-box p-3 glow-blue backdrop-blur-xl">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-system-blue/30 pb-2 mb-3">
+            <div class="flex items-center space-x-2">
+              <span class="text-[10px] font-launcher-sub text-slate-400">CHOSEN DATE:</span>
+              <span id="selectedDateDisplay" class="font-launcher text-xs text-emerald-400 text-glow-green">
+                -- --- ----
               </span>
-              <i class="fa-solid fa-wand-magic-sparkles text-blue-400 text-xs"></i>
             </div>
-
-            <div class="space-y-2 text-xs">
-              <div class="p-2 bg-slate-950/70 border border-blue-900/40 flex items-center justify-between">
-                <div>
-                  <div class="font-launcher text-blue-300 text-xs">SHADOW EXTRACTION</div>
-                  <div class="text-[10px] text-slate-400">Extract shadow soldiers from corpses</div>
-                </div>
-                <span class="text-[10px] font-launcher bg-blue-950 text-blue-300 border border-blue-700 px-1.5 py-0.5">LV. MAX</span>
-              </div>
-
-              <div class="p-2 bg-slate-950/70 border border-blue-900/40 flex items-center justify-between">
-                <div>
-                  <div class="font-launcher text-blue-300 text-xs">MONARCH'S DOMAIN</div>
-                  <div class="text-[10px] text-slate-400">+50% shadow soldier stats in domain</div>
-                </div>
-                <span class="text-[10px] font-launcher bg-blue-950 text-blue-300 border border-blue-700 px-1.5 py-0.5">LV. MAX</span>
-              </div>
-
-              <div class="p-2 bg-slate-950/70 border border-cyan-900/40 flex items-center justify-between">
-                <div>
-                  <div class="font-launcher text-cyan-300 text-xs">DOMINATOR'S TOUCH</div>
-                  <div class="text-[10px] text-slate-400">Control objects with telekinesis</div>
-                </div>
-                <span class="text-[10px] font-launcher bg-cyan-950 text-cyan-300 border border-cyan-700 px-1.5 py-0.5">LV. 2</span>
-              </div>
+            
+            <!-- Tab Switching Buttons -->
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="switchTab('tasks')" id="tabBtn_tasks" class="px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-system-blue text-slate-950 transition-all">
+                TASKS / HABITS
+              </button>
+              <button onclick="openAddTaskModal()" class="px-2 py-1 text-[11px] font-launcher-sub clip-system-btn bg-emerald-500/20 border border-emerald-500/60 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all">
+                + ADD TASK
+              </button>
+              <button onclick="switchTab('deadlines')" id="tabBtn_deadlines" class="px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 transition-all">
+                DEADLINES
+              </button>
+              <button onclick="switchTab('note')" id="tabBtn_note" class="px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 transition-all">
+                NOTE
+              </button>
+              <button onclick="switchTab('achievements')" id="tabBtn_achievements" class="px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 transition-all">
+                ACHIEVEMENTS
+              </button>
+              <button onclick="switchTab('syllabus')" id="tabBtn_syllabus" class="px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 transition-all">
+                SYLLABUS
+              </button>
             </div>
           </div>
 
-          <!-- SHADOW ARMY TERMINAL -->
-          <div class="bg-system-card border border-system-blue/50 clip-system-box p-4 glow-blue backdrop-blur-xl flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between border-b border-system-blue/30 pb-2 mb-3">
-                <span class="font-launcher text-xs text-system-blue">
-                  SHADOW ARMY COMMAND
-                </span>
-                <i class="fa-solid fa-ghost text-system-blue text-xs"></i>
-              </div>
-
-              <div class="text-xs text-slate-300 space-y-1.5 mb-4 font-launcher-sub">
-                <div class="flex justify-between">
-                  <span>SAVED SOLDIERS:</span>
-                  <span class="font-launcher text-system-blue">130,000+</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>COMMANDERS:</span>
-                  <span class="font-launcher text-blue-400">IGRIS / BERU / BELLION</span>
-                </div>
-              </div>
+          <!-- TAB 1: TASKS & HABITS LIST VIEW -->
+          <div id="tabView_tasks" class="space-y-3">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-sans">
+                <thead class="bg-slate-950/80 text-blue-300 font-launcher-sub text-[10px] border-b border-system-blue/30">
+                  <tr>
+                    <th class="p-2">NO.</th>
+                    <th class="p-2">TASK NAME</th>
+                    <th class="p-2">DEADLINE</th>
+                    <th class="p-2">LIFE ASPECT</th>
+                    <th class="p-2">STREAK</th>
+                    <th class="p-2 text-right">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="taskListTableBody" class="divide-y divide-slate-800/60 font-launcher-sub text-slate-200">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            <!-- ARISE / SUMMON BUTTON -->
-            <button 
-              onclick="summonShadows()"
-              class="w-full py-2.5 bg-gradient-to-r from-blue-900 via-indigo-700 to-cyan-600 hover:from-blue-800 hover:to-cyan-500 text-white font-launcher text-xs clip-system-btn transition-all duration-300 shadow-md shadow-blue-900/50 flex items-center justify-center space-x-2 active:scale-95"
-            >
-              <i class="fa-solid fa-skull text-blue-300"></i>
-              <span>ARISE (EXTRACT SHADOWS)</span>
+          <!-- TAB 2: DEADLINES VIEW -->
+          <div id="tabView_deadlines" class="hidden space-y-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-launcher text-xs text-rose-400">DEADLINE MANAGER</span>
+              <button onclick="addDeadlineRow()" class="px-2.5 py-1 bg-rose-500/20 border border-rose-500/50 text-rose-300 hover:bg-rose-500 hover:text-slate-950 text-xs font-launcher-sub clip-system-btn transition-all">
+                + ADD DEADLINE
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-sans">
+                <thead class="bg-slate-950/80 text-rose-300 font-launcher-sub text-[10px] border-b border-rose-900/40">
+                  <tr>
+                    <th class="p-2">NO.</th>
+                    <th class="p-2">TASK NAME</th>
+                    <th class="p-2">CATEGORY</th>
+                    <th class="p-2">DATE OF DEADLINE</th>
+                    <th class="p-2 text-right">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="deadlineListTableBody" class="divide-y divide-slate-800/60 font-launcher-sub text-slate-200">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+            <button onclick="saveDeadlinesData()" class="w-full py-2 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn">
+              SAVE DEADLINES
             </button>
           </div>
 
-        </div>
+          <!-- TAB 3: NOTE CANVAS EDITOR (KALPURUSH FONT & HORIZONTAL TOOLBAR) -->
+          <div id="tabView_note" class="hidden space-y-3">
+            <!-- Toolbar -->
+            <div class="bg-slate-950 p-2 border border-system-blue/30 flex flex-wrap items-center gap-2 text-xs">
+              <button onclick="formatNote('heading')" title="Heading" class="px-2 py-1 bg-slate-900 border border-slate-700 text-cyan-300 font-bold hover:bg-system-blue hover:text-slate-950 clip-system-btn">H1</button>
+              <button onclick="formatNote('subheading')" title="Subheading" class="px-2 py-1 bg-slate-900 border border-slate-700 text-cyan-300 font-semibold hover:bg-system-blue hover:text-slate-950 clip-system-btn">H2</button>
+              <button onclick="formatNote('bold')" title="Bold" class="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-200 font-bold hover:bg-system-blue hover:text-slate-950 clip-system-btn"><i class="fa-solid fa-bold"></i></button>
+              <button onclick="formatNote('italic')" title="Italic" class="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-200 italic hover:bg-system-blue hover:text-slate-950 clip-system-btn"><i class="fa-solid fa-italic"></i></button>
+              <button onclick="formatNote('underline')" title="Underline" class="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-200 underline hover:bg-system-blue hover:text-slate-950 clip-system-btn"><i class="fa-solid fa-underline"></i></button>
+              
+              <!-- Font Size -->
+              <select id="noteFontSize" onchange="changeNoteFontSize(this.value)" class="system-select-field px-1.5 py-1 text-xs">
+                <option value="14px">14px</option>
+                <option value="16px" selected>16px</option>
+                <option value="20px">20px</option>
+                <option value="24px">24px</option>
+              </select>
 
-        <!-- INVENTORY QUICK BAR -->
-        <div class="bg-system-card border border-system-blue/40 clip-system-box p-4 glow-blue backdrop-blur-xl">
-          <div class="flex items-center justify-between border-b border-system-blue/30 pb-2 mb-3">
-            <span class="font-launcher text-xs text-system-blue">
-              INVENTORY VAULT
-            </span>
-            <span class="text-[10px] font-launcher-sub text-slate-400">SLOTS: 6 / 100</span>
+              <!-- Font Selection -->
+              <select id="noteFontFamily" onchange="changeNoteFontFamily(this.value)" class="system-select-field px-1.5 py-1 text-xs font-kalpurush">
+                <option value="Kalpurush" selected>Font: Kalpurush</option>
+                <option value="Inter">Font: Inter</option>
+                <option value="monospace">Font: Monospace</option>
+              </select>
+
+              <div class="h-4 w-px bg-slate-700 mx-1"></div>
+
+              <!-- Page Controls -->
+              <button onclick="addNewNotePage()" class="px-2 py-1 bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 text-xs clip-system-btn">
+                + NEW PAGE
+              </button>
+              <button onclick="navNotePage(-1)" class="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-200 hover:bg-system-blue hover:text-slate-950 clip-system-btn">
+                <i class="fa-solid fa-arrow-left"></i> PREV
+              </button>
+              <span id="notePageTracker" class="font-launcher text-xs text-yellow-400 px-1">PAGE 1 / 1</span>
+              <button onclick="navNotePage(1)" class="px-2 py-1 bg-slate-900 border border-slate-700 text-slate-200 hover:bg-system-blue hover:text-slate-950 clip-system-btn">
+                NEXT <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- Editor Canvas -->
+            <div 
+              id="noteCanvas" 
+              contenteditable="true" 
+              class="w-full min-h-[260px] max-h-[350px] overflow-y-auto bg-slate-950/90 border border-system-blue/40 p-4 text-slate-100 font-kalpurush focus:outline-none focus:border-cyan-400 leading-relaxed shadow-inner"
+              style="font-size: 16px;"
+              placeholder="Write your notes here in Kalpurush / English..."
+            ></div>
+
+            <button onclick="saveCurrentNotePage()" class="w-full py-2 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn">
+              SAVE NOTE PAGE
+            </button>
           </div>
 
-          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
-            <div title="Rasaka's Dagger" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-dagger text-rose-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Rasaka Dagger</span>
+          <!-- TAB 4: ACHIEVEMENTS TAB -->
+          <div id="tabView_achievements" class="hidden space-y-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-launcher text-xs text-yellow-400">HUNTER ACHIEVEMENTS LIST</span>
+              <button onclick="addAchievementRow()" class="px-2.5 py-1 bg-yellow-500/20 border border-yellow-500/50 text-yellow-300 hover:bg-yellow-500 hover:text-slate-950 text-xs font-launcher-sub clip-system-btn transition-all">
+                + ADD ACHIEVEMENT
+              </button>
             </div>
-            <div title="Demon King's Longsword" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-wand-magic text-yellow-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Demon Sword</span>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-sans">
+                <thead class="bg-slate-950/80 text-yellow-300 font-launcher-sub text-[10px] border-b border-yellow-900/40">
+                  <tr>
+                    <th class="p-2">NO.</th>
+                    <th class="p-2">ACHIEVEMENT NAME</th>
+                    <th class="p-2">DATE UNLOCKED</th>
+                    <th class="p-2">REWARD / ASPECT</th>
+                    <th class="p-2 text-right">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="achievementListTableBody" class="divide-y divide-slate-800/60 font-launcher-sub text-slate-200">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
             </div>
-            <div title="Elixir of Life" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-flask text-emerald-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Holy Water</span>
-            </div>
-            <div title="Cartenon Temple Key" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-key text-blue-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Dungeon Key</span>
-            </div>
-            <div title="Teleportation Stone" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-gem text-cyan-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Teleport Gem</span>
-            </div>
-            <div title="Shadow Monarch Ring" class="aspect-square bg-slate-950/80 border border-slate-800 hover:border-system-blue p-2 flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:scale-105">
-              <i class="fa-solid fa-ring text-indigo-400 text-lg mb-1"></i>
-              <span class="text-[9px] font-launcher-sub text-slate-300 truncate w-full">Monarch Ring</span>
-            </div>
+            <button onclick="saveAchievementsData()" class="w-full py-2 bg-gradient-to-r from-amber-600 to-yellow-400 text-slate-950 font-launcher text-xs clip-system-btn">
+              SAVE ACHIEVEMENTS
+            </button>
           </div>
+
+          <!-- TAB 5: SYLLABUS TRACKER VIEW -->
+          <div id="tabView_syllabus" class="hidden space-y-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-launcher text-xs text-cyan-300">SYLLABUS TRACKER</span>
+              <button onclick="addSyllabusRow()" class="px-2.5 py-1 bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 text-xs font-launcher-sub clip-system-btn transition-all">
+                + ADD SUBJECT
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs font-sans">
+                <thead class="bg-slate-950/80 text-cyan-300 font-launcher-sub text-[10px] border-b border-cyan-900/40">
+                  <tr>
+                    <th class="p-2">NO.</th>
+                    <th class="p-2">SUBJECT / TOPIC</th>
+                    <th class="p-2">PROGRESS %</th>
+                    <th class="p-2">TARGET DATE</th>
+                    <th class="p-2 text-right">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="syllabusListTableBody" class="divide-y divide-slate-800/60 font-launcher-sub text-slate-200">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+            <button onclick="saveSyllabusData()" class="w-full py-2 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher text-xs clip-system-btn">
+              SAVE SYLLABUS
+            </button>
+          </div>
+
         </div>
 
       </section>
 
     </main>
 
+  </div>
+
+  <!-- ADD TASK / HABIT MODAL -->
+  <div id="addTaskModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-system-card border-2 border-system-blue clip-system-box p-6 max-w-md w-full glow-blue relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-system-blue/40 pb-3 mb-4">
+        <h3 class="font-launcher text-sm text-system-blue text-glow-blue">
+          ADD NEW TASK / HABIT
+        </h3>
+        <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleAddTaskSubmit(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-launcher-sub text-blue-300 mb-1">TASK NAME</label>
+          <input type="text" id="inputTaskName" required placeholder="Enter Task Name" class="w-full px-3 py-2 system-input-field font-semibold">
+        </div>
+
+        <div>
+          <label class="block font-launcher-sub text-blue-300 mb-1">TYPE</label>
+          <select id="inputTaskType" onchange="toggleTaskTypeFields(this.value)" class="w-full px-3 py-2 system-select-field font-semibold">
+            <option value="Task">Task</option>
+            <option value="Habit">Habit</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-launcher-sub text-blue-300 mb-1">CATEGORY (LIFE ASPECT)</label>
+          <select id="inputTaskCategory" class="w-full px-3 py-2 system-select-field font-semibold">
+            <option value="01. Muslim">01. Muslim</option>
+            <option value="02. Economic">02. Economic</option>
+            <option value="03. Physical Health">03. Physical Health</option>
+            <option value="04. Mental Health">04. Mental Health</option>
+            <option value="05. Soft Skill">05. Soft Skill</option>
+            <option value="06. Communication Skill">06. Communication Skill</option>
+            <option value="07. Daily Life Skill">07. Daily Life Skill</option>
+            <option value="08. Relationships">08. Relationships</option>
+            <option value="09. Social Works">09. Social Works</option>
+            <option value="10. Projects">10. Projects</option>
+            <option value="11. Hobby & Leisure">11. Hobby & Leisure</option>
+          </select>
+        </div>
+
+        <!-- Task Specific Deadline -->
+        <div id="fieldTaskDeadline">
+          <label class="block font-launcher-sub text-blue-300 mb-1">DEADLINE (DATE, MON, YEAR)</label>
+          <input type="date" id="inputTaskDeadline" class="w-full px-3 py-2 system-input-field font-semibold">
+        </div>
+
+        <!-- Habit Specific Date Range -->
+        <div id="fieldHabitRange" class="hidden space-y-2">
+          <label class="block font-launcher-sub text-blue-300">HABIT DATE RANGE</label>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <span class="text-[10px] text-slate-400">START DATE</span>
+              <input type="date" id="inputHabitStart" class="w-full px-2 py-1.5 system-input-field text-xs">
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-400">END DATE</span>
+              <input type="date" id="inputHabitEnd" class="w-full px-2 py-1.5 system-input-field text-xs">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 pt-2">
+          <button type="button" onclick="closeAddTaskModal()" class="flex-1 py-2.5 bg-slate-900 border border-slate-700 text-slate-400 font-launcher clip-system-btn">
+            CANCEL
+          </button>
+          <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-blue-700 to-cyan-500 text-slate-950 font-launcher clip-system-btn hover:from-blue-600 hover:to-cyan-400 transition-all">
+            OK (SAVE)
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- SYSTEM MODAL -->
@@ -1028,6 +1120,515 @@
   <!-- JAVASCRIPT LOGIC ENGINE -->
   <!-- ========================================================================= -->
   <script>
+    /* -------------------------------------------------------------------------
+     * CALENDAR & SYSTEM TASK / HABIT ENGINE (2020-2030)
+     * ------------------------------------------------------------------------- */
+    let calYear = 2026;
+    let calMonth = 10; // 0-indexed (10 = November)
+    let selectedDateStr = "2026-11-06"; // YYYY-MM-DD
+
+    // Data Repositories
+    let tasksData = {};       // Keyed by date YYYY-MM-DD -> Array of tasks
+    let deadlinesData = [];   // Array of deadlines
+    let achievementsData = [];// Array of achievements
+    let syllabusData = [];    // Array of syllabus items
+    let notePages = ["Write your notes here in Kalpurush / English..."];
+    let currentNoteIndex = 0;
+
+    function initCalendar() {
+      const today = new Date();
+      calYear = today.getFullYear();
+      calMonth = today.getMonth();
+      selectedDateStr = formatDateKey(today);
+
+      loadAllTaskSystemData();
+      renderCalendar();
+      updateSelectedDateDisplay();
+      renderTasksList();
+      renderDeadlinesList();
+      renderAchievementsList();
+      renderSyllabusList();
+      loadNotePage(0);
+    }
+
+    function formatDateKey(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatShortDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length < 3) return dateStr;
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const mIdx = parseInt(parts[1]) - 1;
+      return `${parts[2]} ${months[mIdx] || ''} ${parts[0]}`;
+    }
+
+    function renderCalendar() {
+      const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+      
+      const disp = document.getElementById('calMonthYearDisplay');
+      if (disp) disp.innerText = `${monthNames[calMonth]} ${calYear}`;
+
+      const grid = document.getElementById('calendarDaysGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const firstDay = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+      // Empty lead slots
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'p-2 text-slate-700';
+        grid.appendChild(emptyCell);
+      }
+
+      // Day slots
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayDateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isSelected = dayDateStr === selectedDateStr;
+        
+        const cell = document.createElement('button');
+        cell.onclick = () => selectCalDate(dayDateStr);
+
+        let cellClass = 'p-2 rounded border border-slate-800/80 hover:border-cyan-400 transition-all font-semibold ';
+        if (isSelected) {
+          cellClass += 'bg-system-blue text-slate-950 font-bold border-cyan-300 shadow-md shadow-cyan-500/50';
+        } else {
+          cellClass += 'bg-slate-950/70 text-slate-200 hover:bg-slate-900';
+        }
+
+        cell.className = cellClass;
+        cell.innerText = day;
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeCalMonth(delta) {
+      calMonth += delta;
+      if (calMonth > 11) {
+        if (calYear < 2030) {
+          calMonth = 0;
+          calYear++;
+        } else {
+          calMonth = 11;
+        }
+      } else if (calMonth < 0) {
+        if (calYear > 2020) {
+          calMonth = 11;
+          calYear--;
+        } else {
+          calMonth = 0;
+        }
+      }
+      renderCalendar();
+    }
+
+    function selectCalDate(dateStr) {
+      selectedDateStr = dateStr;
+      renderCalendar();
+      updateSelectedDateDisplay();
+      renderTasksList();
+    }
+
+    function updateSelectedDateDisplay() {
+      const disp = document.getElementById('selectedDateDisplay');
+      if (disp) disp.innerText = formatShortDate(selectedDateStr);
+    }
+
+    /* -------------------------------------------------------------------------
+     * TAB NAVIGATION ENGINE
+     * ------------------------------------------------------------------------- */
+    function switchTab(tabName) {
+      const tabs = ['tasks', 'deadlines', 'note', 'achievements', 'syllabus'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`tabView_${t}`);
+        const btn = document.getElementById(`tabBtn_${t}`);
+        if (view) view.classList.add('hidden');
+        if (btn) {
+          btn.className = 'px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-slate-900 border border-system-blue/40 text-cyan-300 hover:bg-system-blue hover:text-slate-950 transition-all';
+        }
+      });
+
+      const activeView = document.getElementById(`tabView_${tabName}`);
+      const activeBtn = document.getElementById(`tabBtn_${tabName}`);
+      if (activeView) activeView.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.className = 'px-2.5 py-1 text-[11px] font-launcher-sub clip-system-btn bg-system-blue text-slate-950 font-bold transition-all';
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+     * TASKS & HABITS ENGINE
+     * ------------------------------------------------------------------------- */
+    function openAddTaskModal() {
+      document.getElementById('inputTaskName').value = '';
+      document.getElementById('inputTaskDeadline').value = selectedDateStr;
+      document.getElementById('inputHabitStart').value = selectedDateStr;
+      document.getElementById('inputHabitEnd').value = selectedDateStr;
+      toggleTaskTypeFields('Task');
+      document.getElementById('addTaskModal').classList.remove('hidden');
+    }
+
+    function closeAddTaskModal() {
+      document.getElementById('addTaskModal').classList.add('hidden');
+    }
+
+    function toggleTaskTypeFields(type) {
+      const taskDf = document.getElementById('fieldTaskDeadline');
+      const habitDf = document.getElementById('fieldHabitRange');
+      if (type === 'Habit') {
+        taskDf.classList.add('hidden');
+        habitDf.classList.remove('hidden');
+      } else {
+        taskDf.classList.remove('hidden');
+        habitDf.classList.add('hidden');
+      }
+    }
+
+    function handleAddTaskSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('inputTaskName').value.trim();
+      const type = document.getElementById('inputTaskType').value;
+      const category = document.getElementById('inputTaskCategory').value;
+
+      let deadlineFormatted = '';
+      let streak = '-';
+
+      if (type === 'Habit') {
+        const start = document.getElementById('inputHabitStart').value;
+        const end = document.getElementById('inputHabitEnd').value;
+        deadlineFormatted = `${formatShortDate(start)} to ${formatShortDate(end)}`;
+        streak = '1 Day 🔥';
+      } else {
+        const dl = document.getElementById('inputTaskDeadline').value;
+        deadlineFormatted = formatShortDate(dl);
+      }
+
+      if (!tasksData[selectedDateStr]) {
+        tasksData[selectedDateStr] = [];
+      }
+
+      tasksData[selectedDateStr].push({
+        id: Date.now(),
+        name,
+        type,
+        category,
+        deadline: deadlineFormatted,
+        streak
+      });
+
+      saveTasksData();
+      renderTasksList();
+      closeAddTaskModal();
+      switchTab('tasks');
+    }
+
+    function deleteTaskItem(idx) {
+      if (tasksData[selectedDateStr]) {
+        tasksData[selectedDateStr].splice(idx, 1);
+        saveTasksData();
+        renderTasksList();
+      }
+    }
+
+    function renderTasksList() {
+      const tbody = document.getElementById('taskListTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const currentTasks = tasksData[selectedDateStr] || [];
+
+      if (currentTasks.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-3 text-center text-slate-500 font-launcher-sub">NO TASKS STORED FOR THIS DATE.</td></tr>`;
+        return;
+      }
+
+      currentTasks.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/60 transition-colors border-b border-slate-800/40';
+        tr.innerHTML = `
+          <td class="p-2 text-cyan-400 font-mono">${idx + 1}</td>
+          <td class="p-2 font-semibold text-white">${item.name}</td>
+          <td class="p-2 text-slate-300">${item.deadline}</td>
+          <td class="p-2 text-blue-300">${item.category}</td>
+          <td class="p-2 ${item.type === 'Habit' ? 'text-amber-400' : 'text-slate-500'}">${item.streak}</td>
+          <td class="p-2 text-right">
+            <button onclick="deleteTaskItem(${idx})" class="px-2 py-0.5 bg-rose-500/20 border border-rose-500/50 text-rose-400 hover:bg-rose-500 hover:text-slate-950 text-[10px] clip-system-btn transition-all">
+              DELETE
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+     * DEADLINES ENGINE
+     * ------------------------------------------------------------------------- */
+    function addDeadlineRow() {
+      deadlinesData.push({
+        id: Date.now(),
+        name: "New Project Target",
+        category: "10. Projects",
+        deadline: selectedDateStr
+      });
+      renderDeadlinesList();
+    }
+
+    function deleteDeadlineRow(idx) {
+      deadlinesData.splice(idx, 1);
+      renderDeadlinesList();
+    }
+
+    function renderDeadlinesList() {
+      const tbody = document.getElementById('deadlineListTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (deadlinesData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-500 font-launcher-sub">NO DEADLINES CONFIGURED.</td></tr>`;
+        return;
+      }
+
+      deadlinesData.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/60 border-b border-slate-800/40';
+        tr.innerHTML = `
+          <td class="p-2 text-rose-400 font-mono">${idx + 1}</td>
+          <td class="p-2">
+            <input type="text" value="${item.name}" onchange="deadlinesData[${idx}].name = this.value" class="w-full bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-white">
+          </td>
+          <td class="p-2">
+            <input type="text" value="${item.category}" onchange="deadlinesData[${idx}].category = this.value" class="w-full bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-blue-300">
+          </td>
+          <td class="p-2">
+            <input type="date" value="${item.deadline}" onchange="deadlinesData[${idx}].deadline = this.value" class="bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-rose-300">
+          </td>
+          <td class="p-2 text-right">
+            <button onclick="deleteDeadlineRow(${idx})" class="px-2 py-0.5 bg-rose-500/20 border border-rose-500/50 text-rose-400 hover:bg-rose-500 hover:text-slate-950 text-[10px] clip-system-btn">
+              DELETE
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function saveDeadlinesData() {
+      localStorage.setItem('sl_deadlines_data', JSON.stringify(deadlinesData));
+      showSystemModal('DEADLINES SAVED', 'ALL DEADLINES DATA HAVE BEEN SAVED SUCCESSFULLY.');
+    }
+
+    /* -------------------------------------------------------------------------
+     * NOTE CANVAS ENGINE (MULTIPLE PAGES & KALPURUSH SUPPORT)
+     * ------------------------------------------------------------------------- */
+    function formatNote(command) {
+      const editor = document.getElementById('noteCanvas');
+      if (!editor) return;
+
+      if (command === 'heading') {
+        document.execCommand('formatBlock', false, '<h1>');
+      } else if (command === 'subheading') {
+        document.execCommand('formatBlock', false, '<h2>');
+      } else {
+        document.execCommand(command, false, null);
+      }
+    }
+
+    function changeNoteFontSize(size) {
+      const editor = document.getElementById('noteCanvas');
+      if (editor) editor.style.fontSize = size;
+    }
+
+    function changeNoteFontFamily(font) {
+      const editor = document.getElementById('noteCanvas');
+      if (editor) {
+        editor.style.fontFamily = font === 'Kalpurush' ? "'Kalpurush', 'Hind Siliguri', sans-serif" : font;
+      }
+    }
+
+    function loadNotePage(idx) {
+      if (idx < 0 || idx >= notePages.length) return;
+      saveCurrentNotePageSilent();
+      currentNoteIndex = idx;
+      const editor = document.getElementById('noteCanvas');
+      if (editor) editor.innerHTML = notePages[currentNoteIndex] || '';
+      updateNotePageTracker();
+    }
+
+    function addNewNotePage() {
+      saveCurrentNotePageSilent();
+      notePages.push('');
+      currentNoteIndex = notePages.length - 1;
+      loadNotePage(currentNoteIndex);
+    }
+
+    function navNotePage(delta) {
+      const target = currentNoteIndex + delta;
+      if (target >= 0 && target < notePages.length) {
+        loadNotePage(target);
+      }
+    }
+
+    function updateNotePageTracker() {
+      const tracker = document.getElementById('notePageTracker');
+      if (tracker) tracker.innerText = `PAGE ${currentNoteIndex + 1} / ${notePages.length}`;
+    }
+
+    function saveCurrentNotePageSilent() {
+      const editor = document.getElementById('noteCanvas');
+      if (editor) {
+        notePages[currentNoteIndex] = editor.innerHTML;
+        localStorage.setItem('sl_notes_pages', JSON.stringify(notePages));
+      }
+    }
+
+    function saveCurrentNotePage() {
+      saveCurrentNotePageSilent();
+      showSystemModal('NOTE SAVED', `PAGE ${currentNoteIndex + 1} COMMITTED TO MEMORY.`);
+    }
+
+    /* -------------------------------------------------------------------------
+     * ACHIEVEMENTS ENGINE
+     * ------------------------------------------------------------------------- */
+    function addAchievementRow() {
+      achievementsData.push({
+        id: Date.now(),
+        name: "First Quest Complete",
+        unlocked: selectedDateStr,
+        reward: "03. Physical Health (+1)"
+      });
+      renderAchievementsList();
+    }
+
+    function deleteAchievementRow(idx) {
+      achievementsData.splice(idx, 1);
+      renderAchievementsList();
+    }
+
+    function renderAchievementsList() {
+      const tbody = document.getElementById('achievementListTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (achievementsData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-500 font-launcher-sub">NO ACHIEVEMENTS RECORDED YET.</td></tr>`;
+        return;
+      }
+
+      achievementsData.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/60 border-b border-slate-800/40';
+        tr.innerHTML = `
+          <td class="p-2 text-yellow-400 font-mono">${idx + 1}</td>
+          <td class="p-2">
+            <input type="text" value="${item.name}" onchange="achievementsData[${idx}].name = this.value" class="w-full bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-white">
+          </td>
+          <td class="p-2">
+            <input type="date" value="${item.unlocked}" onchange="achievementsData[${idx}].unlocked = this.value" class="bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-yellow-300">
+          </td>
+          <td class="p-2">
+            <input type="text" value="${item.reward}" onchange="achievementsData[${idx}].reward = this.value" class="w-full bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-emerald-300">
+          </td>
+          <td class="p-2 text-right">
+            <button onclick="deleteAchievementRow(${idx})" class="px-2 py-0.5 bg-rose-500/20 border border-rose-500/50 text-rose-400 hover:bg-rose-500 hover:text-slate-950 text-[10px] clip-system-btn">
+              DELETE
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function saveAchievementsData() {
+      localStorage.setItem('sl_achievements_data', JSON.stringify(achievementsData));
+      showSystemModal('ACHIEVEMENTS SAVED', 'ACHIEVEMENTS LIST UPDATED.');
+    }
+
+    /* -------------------------------------------------------------------------
+     * SYLLABUS TRACKER ENGINE
+     * ------------------------------------------------------------------------- */
+    function addSyllabusRow() {
+      syllabusData.push({
+        id: Date.now(),
+        subject: "Mathematics / Physics",
+        progress: "50",
+        target: selectedDateStr
+      });
+      renderSyllabusList();
+    }
+
+    function deleteSyllabusRow(idx) {
+      syllabusData.splice(idx, 1);
+      renderSyllabusList();
+    }
+
+    function renderSyllabusList() {
+      const tbody = document.getElementById('syllabusListTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (syllabusData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-500 font-launcher-sub">NO SYLLABUS ITEMS FOUND.</td></tr>`;
+        return;
+      }
+
+      syllabusData.forEach((item, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/60 border-b border-slate-800/40';
+        tr.innerHTML = `
+          <td class="p-2 text-cyan-400 font-mono">${idx + 1}</td>
+          <td class="p-2">
+            <input type="text" value="${item.subject}" onchange="syllabusData[${idx}].subject = this.value" class="w-full bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-white">
+          </td>
+          <td class="p-2">
+            <input type="number" min="0" max="100" value="${item.progress}" onchange="syllabusData[${idx}].progress = this.value" class="w-16 bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-emerald-300"> %
+          </td>
+          <td class="p-2">
+            <input type="date" value="${item.target}" onchange="syllabusData[${idx}].target = this.value" class="bg-slate-950 border border-slate-800 px-2 py-1 text-xs text-cyan-300">
+          </td>
+          <td class="p-2 text-right">
+            <button onclick="deleteSyllabusRow(${idx})" class="px-2 py-0.5 bg-rose-500/20 border border-rose-500/50 text-rose-400 hover:bg-rose-500 hover:text-slate-950 text-[10px] clip-system-btn">
+              DELETE
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function saveSyllabusData() {
+      localStorage.setItem('sl_syllabus_data', JSON.stringify(syllabusData));
+      showSystemModal('SYLLABUS SAVED', 'SYLLABUS TRACKER DATA COMMITTED TO SYSTEM.');
+    }
+
+    /* -------------------------------------------------------------------------
+     * PERSISTENCE LOAD
+     * ------------------------------------------------------------------------- */
+    function loadAllTaskSystemData() {
+      try {
+        const t = localStorage.getItem('sl_tasks_data');
+        if (t) tasksData = JSON.parse(t);
+        const d = localStorage.getItem('sl_deadlines_data');
+        if (d) deadlinesData = JSON.parse(d);
+        const a = localStorage.getItem('sl_achievements_data');
+        if (a) achievementsData = JSON.parse(a);
+        const s = localStorage.getItem('sl_syllabus_data');
+        if (s) syllabusData = JSON.parse(s);
+        const n = localStorage.getItem('sl_notes_pages');
+        if (n) notePages = JSON.parse(n);
+      } catch (e) {}
+    }
+
+    function saveTasksData() {
+      localStorage.setItem('sl_tasks_data', JSON.stringify(tasksData));
+    }
+
     /* -------------------------------------------------------------------------
      * ASPECT COLOR MAP & STATE LOCK CONTROL
      * ------------------------------------------------------------------------- */
@@ -1942,6 +2543,9 @@
       // Start live continuous 60-Year Life Expectancy dual HP bars (1-second update)
       updateLifeBars();
       setInterval(updateLifeBars, 1000);
+
+      // Initialize System Calendar and Task Repositories
+      initCalendar();
 
       // Check LocalStorage Auth State
       checkAuthStatus();
